@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+
+import 'package:tech_store/core/constsnts/AppStrings.dart';
 import 'package:tech_store/features/auth/pages/TwoFactorPage.dart';
 import 'package:tech_store/features/settings/pages/ActiveDevicesPage.dart';
 
 class SecurityPage extends StatelessWidget {
   const SecurityPage({super.key});
 
-  Future<void> _authenticateBiometric(BuildContext context) async {
+  static const Color primaryBlue = Color(0xFF4C5DFF);
+
+  // ============================================================
+  // BIOMETRIC AUTHENTICATION
+  // ============================================================
+
+  Future<void> _authenticateBiometric(
+    BuildContext context,
+  ) async {
     final LocalAuthentication auth = LocalAuthentication();
 
     try {
-      final bool isSupported = await auth.isDeviceSupported();
-      final bool canCheckBiometrics = await auth.canCheckBiometrics;
+      final bool isSupported =
+          await auth.isDeviceSupported();
+
+      final bool canCheckBiometrics =
+          await auth.canCheckBiometrics;
 
       if (!isSupported || !canCheckBiometrics) {
         if (!context.mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-              'Biometric authentication is not available on this device.',
+              AppStrings.biometricUnavailable(context),
             ),
             backgroundColor: Colors.red,
           ),
@@ -28,9 +41,10 @@ class SecurityPage extends StatelessWidget {
         return;
       }
 
-      final bool authenticated = await auth.authenticate(
+      final bool authenticated =
+          await auth.authenticate(
         localizedReason:
-            'Please authenticate to access your account security settings.',
+            AppStrings.biometricLogin(context),
         options: const AuthenticationOptions(
           biometricOnly: true,
           stickyAuth: true,
@@ -44,13 +58,15 @@ class SecurityPage extends StatelessWidget {
         SnackBar(
           content: Text(
             authenticated
-                ? 'Biometric authentication successful.'
-                : 'Biometric authentication failed.',
+                ? AppStrings.biometricAvailable(context)
+                : AppStrings.get(
+                    context,
+                    en: 'Biometric authentication failed.',
+                    ar: 'فشلت المصادقة بالبصمة.',
+                  ),
           ),
           backgroundColor:
-              authenticated
-                  ? const Color(0xFF4C5DFF)
-                  : Colors.red,
+              authenticated ? primaryBlue : Colors.red,
         ),
       );
     } catch (e) {
@@ -59,7 +75,11 @@ class SecurityPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Biometric authentication failed: $e',
+            AppStrings.get(
+              context,
+              en: 'Biometric authentication failed.',
+              ar: 'فشلت المصادقة بالبصمة.',
+            ),
           ),
           backgroundColor: Colors.red,
         ),
@@ -67,67 +87,99 @@ class SecurityPage extends StatelessWidget {
     }
   }
 
+  // ============================================================
+  // BUILD
+  // ============================================================
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor:
+          theme.scaffoldBackgroundColor,
 
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor:
+            theme.scaffoldBackgroundColor,
+
+        foregroundColor:
+            theme.textTheme.titleLarge?.color,
+
         elevation: 0,
-        title: const Text(
-          'Privacy & Security',
+
+        title: Text(
+          AppStrings.privacySecurity(context),
           style: TextStyle(
+            color:
+                theme.textTheme.titleLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
 
-          // ================= BIOMETRIC =================
+          children: [
+            // ==================================================
+            // BIOMETRIC
+            // ==================================================
 
-          _securityTile(
-            icon: Icons.fingerprint,
-            title: 'Biometric Login',
-            onTap: () {
-              _authenticateBiometric(context);
-            },
-          ),
+            _securityTile(
+              context: context,
+              icon: Icons.fingerprint,
+              title:
+                  AppStrings.biometricLogin(context),
+              onTap: () {
+                _authenticateBiometric(context);
+              },
+            ),
 
-          // ================= 2FA =================
+            // ==================================================
+            // TWO FACTOR
+            // ==================================================
 
-          _securityTile(
-            icon: Icons.verified_user_outlined,
-            title: 'Two-Factor Authentication',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const TwoFactorPage(),
-                ),
-              );
-            },
-          ),
+            _securityTile(
+              context: context,
+              icon:
+                  Icons.verified_user_outlined,
+              title:
+                  AppStrings.twoFactor(context),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const TwoFactorPage(),
+                  ),
+                );
+              },
+            ),
 
-          // ================= ACTIVE DEVICES =================
+            // ==================================================
+            // ACTIVE DEVICES
+            // ==================================================
 
-          _securityTile(
-            icon: Icons.devices_outlined,
-            title: 'Active Devices',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ActiveDevicesPage(),
-                ),
-              );
-            },
-          ),
-        ],
+            _securityTile(
+              context: context,
+              icon:
+                  Icons.devices_outlined,
+              title:
+                  AppStrings.activeDevices(context),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const ActiveDevicesPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -137,54 +189,105 @@ class SecurityPage extends StatelessWidget {
   // ============================================================
 
   Widget _securityTile({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
+
+    final Color iconColor =
+        theme.iconTheme.color ??
+            theme.colorScheme.onSurface;
+
+    final Color textColor =
+        theme.textTheme.bodyLarge?.color ??
+            theme.colorScheme.onSurface;
+
+    final Color arrowColor =
+        theme.iconTheme.color
+                ?.withOpacity(0.5) ??
+            theme.colorScheme.onSurface
+                .withOpacity(0.5);
+
     return Container(
       margin: const EdgeInsets.only(
         bottom: 12,
       ),
+
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(14),
+        color: theme.cardColor,
+
+        borderRadius:
+            BorderRadius.circular(16),
+
+        border: Border.all(
+          color: theme.dividerColor,
+        ),
       ),
+
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(14),
+
+        borderRadius:
+            BorderRadius.circular(16),
+
+        clipBehavior:
+            Clip.antiAlias,
+
         child: InkWell(
-          borderRadius: BorderRadius.circular(14),
           onTap: onTap,
+
+          borderRadius:
+              BorderRadius.circular(16),
+
           child: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding:
+                const EdgeInsets.symmetric(
               horizontal: 18,
               vertical: 17,
             ),
+
             child: Row(
               children: [
+                // =================================================
+                // ICON
+                // =================================================
 
                 Icon(
                   icon,
-                  color: Colors.white,
+                  color: iconColor,
                   size: 26,
                 ),
 
-                const SizedBox(width: 16),
+                const SizedBox(
+                  width: 16,
+                ),
+
+                // =================================================
+                // TITLE
+                // =================================================
 
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(
-                      color: Colors.white,
+
+                    style: TextStyle(
+                      color: textColor,
                       fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          FontWeight.w500,
                     ),
                   ),
                 ),
 
-                const Icon(
+                // =================================================
+                // ARROW
+                // =================================================
+
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.grey,
+                  color: arrowColor,
                   size: 16,
                 ),
               ],

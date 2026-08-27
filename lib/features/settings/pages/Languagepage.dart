@@ -1,68 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tech_store/features/settings/cubits/SettingsCubit.dart';
 
+import 'package:tech_store/core/constsnts/AppStrings.dart';
+import 'package:tech_store/features/settings/cubits/SettingsCubit.dart';
 
 class LanguagePage extends StatelessWidget {
   const LanguagePage({
     super.key,
   });
 
+  static const Color primaryBlue = Color(0xFF4C5DFF);
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<
-        SettingsCubit,
-        SettingsState>(
-      builder: (
-        context,
-        state,
-      ) {
-        final isArabic =
-            state.locale.languageCode ==
-                'ar';
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        final theme = Theme.of(context);
 
-        final theme =
-            Theme.of(context);
+        final bool isArabic =
+            state.locale.languageCode == 'ar';
 
         return Scaffold(
           backgroundColor:
               theme.scaffoldBackgroundColor,
 
           appBar: AppBar(
-            title: Text(
-              isArabic
-                  ? 'اللغة'
-                  : 'Language',
+            backgroundColor:
+                theme.scaffoldBackgroundColor,
 
-              style:
-                  const TextStyle(
-                fontWeight:
-                    FontWeight.bold,
+            elevation: 0,
+
+            iconTheme: IconThemeData(
+              color: theme.iconTheme.color,
+            ),
+
+            title: Text(
+              AppStrings.language(context),
+              style: TextStyle(
+                color:
+                    theme.textTheme.titleLarge?.color,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
 
           body: ListView(
-            padding:
-                const EdgeInsets.all(
-              20,
-            ),
+            padding: const EdgeInsets.all(20),
 
             children: [
-              _languageTile(
-                context,
-                title: 'English',
-                value: 'English',
-                selected:
-                    !isArabic,
-              ),
+              // =====================================================
+              // ENGLISH
+              // =====================================================
 
               _languageTile(
                 context,
-                title: 'العربية',
-                value: 'Arabic',
-                selected:
-                    isArabic,
+                title: AppStrings.english(context),
+                selected: !isArabic,
+                onTap: () {
+                  context
+                      .read<SettingsCubit>()
+                      .setLanguage('English');
+                },
+              ),
+
+              // =====================================================
+              // ARABIC
+              // =====================================================
+
+              _languageTile(
+                context,
+                title: AppStrings.arabic(context),
+                selected: isArabic,
+                onTap: () {
+                  context
+                      .read<SettingsCubit>()
+                      .setLanguage('Arabic');
+                },
               ),
             ],
           ),
@@ -71,95 +84,86 @@ class LanguagePage extends StatelessWidget {
     );
   }
 
+  // =============================================================
+  // LANGUAGE TILE
+  // =============================================================
+
   Widget _languageTile(
     BuildContext context, {
     required String title,
-    required String value,
     required bool selected,
+    required VoidCallback onTap,
   }) {
-    final theme =
-        Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
-      margin:
-          const EdgeInsets.only(
+      margin: const EdgeInsets.only(
         bottom: 12,
       ),
 
-      decoration:
-          BoxDecoration(
-        color:
-            theme.cardColor,
+      decoration: BoxDecoration(
+        color: theme.cardColor,
 
         borderRadius:
-            BorderRadius.circular(
-          16,
-        ),
+            BorderRadius.circular(16),
       ),
 
-      child: InkWell(
-        borderRadius:
-            BorderRadius.circular(
-          16,
-        ),
+      child: Material(
+        color: Colors.transparent,
 
-        onTap: () {
-          context
-              .read<SettingsCubit>()
-              .setLanguage(
-                value,
-              );
-        },
+        child: InkWell(
+          borderRadius:
+              BorderRadius.circular(16),
 
-        child: Padding(
-          padding:
-              const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 6,
-          ),
+          onTap: onTap,
 
-          child: Row(
-            children: [
-              Icon(
-                selected
-                    ? Icons
-                        .radio_button_checked
-                    : Icons
-                        .radio_button_off,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
 
-                color: selected
-                    ? const Color(
-                        0xFF4C5DFF,
-                      )
-                    : theme
-                        .iconTheme
-                        .color,
-              ),
+            child: Row(
+              children: [
+                Icon(
+                  selected
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_off,
 
-              const SizedBox(
-                width: 14,
-              ),
+                  color: selected
+                      ? primaryBlue
+                      : theme.iconTheme.color,
+                ),
 
-              Expanded(
-                child: Text(
-                  title,
+                const SizedBox(width: 14),
 
-                  style: TextStyle(
-                    color: theme
-                        .textTheme
-                        .bodyLarge
-                        ?.color,
+                Expanded(
+                  child: Text(
+                    title,
 
-                    fontSize: 16,
+                    style: TextStyle(
+                      color: theme
+                          .textTheme
+                          .bodyLarge
+                          ?.color,
 
-                    fontWeight:
-                        selected
-                            ? FontWeight.w600
-                            : FontWeight.normal,
+                      fontSize: 16,
+
+                      fontWeight: selected
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                    ),
                   ),
                 ),
-              ),
-            ],
+
+                if (selected)
+                  const Icon(
+                    Icons.check,
+                    color: primaryBlue,
+                    size: 20,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

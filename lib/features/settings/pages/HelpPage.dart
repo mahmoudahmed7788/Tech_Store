@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:tech_store/core/constsnts/AppStrings.dart';
 
 class HelpPage extends StatelessWidget {
   const HelpPage({super.key});
 
   static const Color primaryBlue = Color(0xFF4C5DFF);
-  static const Color cardColor = Color(0xFF1A1A1A);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onSurface;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
+        theme.colorScheme.onSurface.withOpacity(0.65);
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
 
       // =====================================================
       // APP BAR
       // =====================================================
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
 
-        title: const Text(
-          'Help & Support',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        foregroundColor: textColor,
+
+        elevation: 0,
+
+        title: Text(
+          AppStrings.get(context, en: 'Help & Support', ar: 'المساعدة والدعم'),
+          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
         ),
       ),
 
@@ -35,10 +47,14 @@ class HelpPage extends StatelessWidget {
             // =================================================
             // HEADER
             // =================================================
-            const Text(
-              'How can we help you?',
+            Text(
+              AppStrings.get(
+                context,
+                en: 'How can we help you?',
+                ar: 'كيف يمكننا مساعدتك؟',
+              ),
               style: TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
               ),
@@ -46,21 +62,33 @@ class HelpPage extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            const Text(
-              'Choose an option below to get help.',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+            Text(
+              AppStrings.get(
+                context,
+                en: 'Choose an option below to get help.',
+                ar: 'اختر أحد الخيارات التالية للحصول على المساعدة.',
+              ),
+              style: TextStyle(color: secondaryColor, fontSize: 14),
             ),
 
             const SizedBox(height: 30),
 
             // =================================================
-            // FREQUENTLY ASKED QUESTIONS
+            // FAQ
             // =================================================
             _helpTile(
               context: context,
               icon: Icons.quiz_outlined,
-              title: 'Frequently Asked Questions',
-              subtitle: 'Find answers to common questions',
+              title: AppStrings.get(
+                context,
+                en: 'Frequently Asked Questions',
+                ar: 'الأسئلة الشائعة',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Find answers to common questions',
+                ar: 'اعثر على إجابات للأسئلة الشائعة',
+              ),
               onTap: () {
                 _showFaq(context);
               },
@@ -72,34 +100,58 @@ class HelpPage extends StatelessWidget {
             _helpTile(
               context: context,
               icon: Icons.support_agent_outlined,
-              title: 'Contact Support',
-              subtitle: 'Get in touch with our support team',
+              title: AppStrings.get(
+                context,
+                en: 'Contact Support',
+                ar: 'تواصل مع الدعم',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Get in touch with our support team',
+                ar: 'تواصل مع فريق الدعم',
+              ),
               onTap: () {
                 _showContactSupport(context);
               },
             ),
 
             // =================================================
-            // REPORT A PROBLEM
+            // REPORT PROBLEM
             // =================================================
             _helpTile(
               context: context,
               icon: Icons.bug_report_outlined,
-              title: 'Report a Problem',
-              subtitle: 'Tell us about a problem you found',
+              title: AppStrings.get(
+                context,
+                en: 'Report a Problem',
+                ar: 'الإبلاغ عن مشكلة',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Tell us about a problem you found',
+                ar: 'أخبرنا عن المشكلة التي واجهتك',
+              ),
               onTap: () {
                 _showReportProblem(context);
               },
             ),
 
             // =================================================
-            // ABOUT TECH STORE
+            // ABOUT
             // =================================================
             _helpTile(
               context: context,
               icon: Icons.info_outline,
-              title: 'About Tech Store',
-              subtitle: 'Learn more about Tech Store',
+              title: AppStrings.get(
+                context,
+                en: 'About Tech Store',
+                ar: 'عن Tech Store',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Learn more about Tech Store',
+                ar: 'تعرف على المزيد عن Tech Store',
+              ),
               onTap: () {
                 _showAbout(context);
               },
@@ -121,12 +173,24 @@ class HelpPage extends StatelessWidget {
     required String subtitle,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onSurface;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
+        theme.colorScheme.onSurface.withOpacity(0.65);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
 
       decoration: BoxDecoration(
-        color: cardColor,
+        color: theme.cardColor,
+
         borderRadius: BorderRadius.circular(16),
+
+        border: Border.all(color: theme.dividerColor),
       ),
 
       child: Material(
@@ -153,6 +217,7 @@ class HelpPage extends StatelessWidget {
 
                   decoration: BoxDecoration(
                     color: primaryBlue.withOpacity(0.15),
+
                     borderRadius: BorderRadius.circular(14),
                   ),
 
@@ -171,9 +236,8 @@ class HelpPage extends StatelessWidget {
                     children: [
                       Text(
                         title,
-
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: textColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
@@ -183,11 +247,7 @@ class HelpPage extends StatelessWidget {
 
                       Text(
                         subtitle,
-
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: secondaryColor, fontSize: 12),
                       ),
                     ],
                   ),
@@ -196,11 +256,7 @@ class HelpPage extends StatelessWidget {
                 // =================================================
                 // ARROW
                 // =================================================
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey,
-                  size: 15,
-                ),
+                Icon(Icons.arrow_forward_ios, color: secondaryColor, size: 15),
               ],
             ),
           ),
@@ -214,10 +270,12 @@ class HelpPage extends StatelessWidget {
   // =========================================================
 
   void _showFaq(BuildContext context) {
+    final theme = Theme.of(context);
+
     showModalBottomSheet(
       context: context,
 
-      backgroundColor: cardColor,
+      backgroundColor: theme.cardColor,
 
       isScrollControlled: true,
 
@@ -225,7 +283,7 @@ class HelpPage extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
 
-      builder: (context) {
+      builder: (sheetContext) {
         return SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -235,35 +293,85 @@ class HelpPage extends StatelessWidget {
 
               children: [
                 _sheetTitle(
+                  context: sheetContext,
                   icon: Icons.quiz_outlined,
-                  title: 'Frequently Asked Questions',
+                  title: AppStrings.get(
+                    sheetContext,
+                    en: 'Frequently Asked Questions',
+                    ar: 'الأسئلة الشائعة',
+                  ),
                 ),
 
                 const SizedBox(height: 20),
 
                 _faqQuestion(
-                  'How can I create an account?',
-                  'Go to the Register page and enter your name, email and password.',
+                  context: sheetContext,
+                  question: AppStrings.get(
+                    sheetContext,
+                    en: 'How can I create an account?',
+                    ar: 'كيف يمكنني إنشاء حساب؟',
+                  ),
+                  answer: AppStrings.get(
+                    sheetContext,
+                    en: 'Go to the Register page and enter your name, email and password.',
+                    ar: 'اذهب إلى صفحة التسجيل وأدخل اسمك والبريد الإلكتروني وكلمة المرور.',
+                  ),
                 ),
 
                 _faqQuestion(
-                  'How can I change my language?',
-                  'Go to Settings → Language and select English or Arabic.',
+                  context: sheetContext,
+                  question: AppStrings.get(
+                    sheetContext,
+                    en: 'How can I change my language?',
+                    ar: 'كيف يمكنني تغيير لغة التطبيق؟',
+                  ),
+                  answer: AppStrings.get(
+                    sheetContext,
+                    en: 'Go to Settings → Language and select English or Arabic.',
+                    ar: 'اذهب إلى الإعدادات ← اللغة واختر الإنجليزية أو العربية.',
+                  ),
                 ),
 
                 _faqQuestion(
-                  'How can I change the app theme?',
-                  'Go to Settings → Dark Mode and choose your preferred theme.',
+                  context: sheetContext,
+                  question: AppStrings.get(
+                    sheetContext,
+                    en: 'How can I change the app theme?',
+                    ar: 'كيف يمكنني تغيير مظهر التطبيق؟',
+                  ),
+                  answer: AppStrings.get(
+                    sheetContext,
+                    en: 'Go to Settings → Appearance and choose your preferred theme.',
+                    ar: 'اذهب إلى الإعدادات ← المظهر واختر المظهر الذي تفضله.',
+                  ),
                 ),
 
                 _faqQuestion(
-                  'How can I contact support?',
-                  'Open Settings → Help & Support → Contact Support.',
+                  context: sheetContext,
+                  question: AppStrings.get(
+                    sheetContext,
+                    en: 'How can I contact support?',
+                    ar: 'كيف يمكنني التواصل مع الدعم؟',
+                  ),
+                  answer: AppStrings.get(
+                    sheetContext,
+                    en: 'Open Settings → Help & Support → Contact Support.',
+                    ar: 'افتح الإعدادات ← المساعدة والدعم ← تواصل مع الدعم.',
+                  ),
                 ),
 
                 _faqQuestion(
-                  'How can I report a problem?',
-                  'Open Report a Problem and describe the problem you are experiencing.',
+                  context: sheetContext,
+                  question: AppStrings.get(
+                    sheetContext,
+                    en: 'How can I report a problem?',
+                    ar: 'كيف يمكنني الإبلاغ عن مشكلة؟',
+                  ),
+                  answer: AppStrings.get(
+                    sheetContext,
+                    en: 'Open Report a Problem and describe the problem you are experiencing.',
+                    ar: 'افتح الإبلاغ عن مشكلة واكتب المشكلة التي تواجهها.',
+                  ),
                 ),
 
                 const SizedBox(height: 10),
@@ -280,16 +388,18 @@ class HelpPage extends StatelessWidget {
   // =========================================================
 
   void _showContactSupport(BuildContext context) {
+    final theme = Theme.of(context);
+
     showModalBottomSheet(
       context: context,
 
-      backgroundColor: cardColor,
+      backgroundColor: theme.cardColor,
 
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
 
-      builder: (context) {
+      builder: (sheetContext) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -301,28 +411,56 @@ class HelpPage extends StatelessWidget {
 
               children: [
                 _sheetTitle(
+                  context: sheetContext,
                   icon: Icons.support_agent_outlined,
-                  title: 'Contact Support',
+                  title: AppStrings.get(
+                    sheetContext,
+                    en: 'Contact Support',
+                    ar: 'تواصل مع الدعم',
+                  ),
                 ),
 
                 const SizedBox(height: 25),
 
                 _contactOption(
+                  context: sheetContext,
                   icon: Icons.email_outlined,
-                  title: 'Email',
+                  title: AppStrings.get(
+                    sheetContext,
+                    en: 'Email',
+                    ar: 'البريد الإلكتروني',
+                  ),
                   subtitle: 'support@techstore.com',
                 ),
 
                 _contactOption(
+                  context: sheetContext,
                   icon: Icons.chat_outlined,
-                  title: 'Live Chat',
-                  subtitle: 'Chat with our support team',
+                  title: AppStrings.get(
+                    sheetContext,
+                    en: 'Live Chat',
+                    ar: 'المحادثة المباشرة',
+                  ),
+                  subtitle: AppStrings.get(
+                    sheetContext,
+                    en: 'Chat with our support team',
+                    ar: 'تحدث مع فريق الدعم',
+                  ),
                 ),
 
                 _contactOption(
+                  context: sheetContext,
                   icon: Icons.phone_outlined,
-                  title: 'Phone',
-                  subtitle: 'Contact us by phone',
+                  title: AppStrings.get(
+                    sheetContext,
+                    en: 'Phone',
+                    ar: 'الهاتف',
+                  ),
+                  subtitle: AppStrings.get(
+                    sheetContext,
+                    en: 'Contact us by phone',
+                    ar: 'تواصل معنا عبر الهاتف',
+                  ),
                 ),
 
                 const SizedBox(height: 10),
@@ -339,18 +477,34 @@ class HelpPage extends StatelessWidget {
   // =========================================================
 
   void _showReportProblem(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
+    final theme = Theme.of(context);
+
+    final controller = TextEditingController();
 
     showDialog(
       context: context,
 
       builder: (dialogContext) {
-        return AlertDialog(
-          backgroundColor: cardColor,
+        final dialogTheme = Theme.of(dialogContext);
 
-          title: const Text(
-            'Report a Problem',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        final textColor =
+            dialogTheme.textTheme.bodyLarge?.color ??
+            dialogTheme.colorScheme.onSurface;
+
+        final secondaryColor =
+            dialogTheme.textTheme.bodyMedium?.color ??
+            dialogTheme.colorScheme.onSurfaceVariant;
+
+        return AlertDialog(
+          backgroundColor: dialogTheme.cardColor,
+
+          title: Text(
+            AppStrings.get(
+              dialogContext,
+              en: 'Report a Problem',
+              ar: 'الإبلاغ عن مشكلة',
+            ),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
           ),
 
           content: TextField(
@@ -358,49 +512,88 @@ class HelpPage extends StatelessWidget {
 
             maxLines: 5,
 
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: textColor),
 
             decoration: InputDecoration(
-              hintText: 'Describe the problem...',
+              hintText: AppStrings.get(
+                dialogContext,
+                en: 'Describe the problem...',
+                ar: 'صف المشكلة التي تواجهها...',
+              ),
 
-              hintStyle: const TextStyle(color: Colors.grey),
+              hintStyle: TextStyle(color: secondaryColor),
 
               filled: true,
 
-              fillColor: const Color(0xFF252525),
+              fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
 
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
 
                 borderSide: BorderSide.none,
               ),
+
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+
+                borderSide: const BorderSide(color: primaryBlue),
+              ),
             ),
           ),
 
           actions: [
+            // =================================================
+            // CANCEL
+            // =================================================
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext);
               },
 
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+              child: Text(
+                AppStrings.cancel(dialogContext),
+                style: TextStyle(color: secondaryColor),
+              ),
             ),
 
+            // =================================================
+            // SUBMIT
+            // =================================================
             TextButton(
               onPressed: () {
+                final message = controller.text.trim();
+
                 Navigator.pop(dialogContext);
 
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Problem reported successfully.'),
+                  SnackBar(
+                    content: Text(
+                      message.isEmpty
+                          ? AppStrings.get(
+                              context,
+                              en: 'Please describe the problem first.',
+                              ar: 'من فضلك اكتب المشكلة أولاً.',
+                            )
+                          : AppStrings.get(
+                              context,
+                              en: 'Problem reported successfully.',
+                              ar: 'تم الإبلاغ عن المشكلة بنجاح.',
+                            ),
+                    ),
+                    backgroundColor: message.isEmpty
+                        ? Colors.red
+                        : Colors.green,
                   ),
                 );
+
+                controller.dispose();
               },
 
-              child: const Text(
-                'Submit',
-
-                style: TextStyle(
+              child: Text(
+                AppStrings.get(dialogContext, en: 'Submit', ar: 'إرسال'),
+                style: const TextStyle(
                   color: primaryBlue,
                   fontWeight: FontWeight.bold,
                 ),
@@ -417,16 +610,25 @@ class HelpPage extends StatelessWidget {
   // =========================================================
 
   void _showAbout(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onSurface;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
+        theme.colorScheme.onSurface.withOpacity(0.65);
+
     showModalBottomSheet(
       context: context,
 
-      backgroundColor: cardColor,
+      backgroundColor: theme.cardColor,
 
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
 
-      builder: (context) {
+      builder: (sheetContext) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -435,6 +637,9 @@ class HelpPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
 
               children: [
+                // =================================================
+                // ICON
+                // =================================================
                 Container(
                   width: 70,
                   height: 70,
@@ -454,11 +659,13 @@ class HelpPage extends StatelessWidget {
 
                 const SizedBox(height: 18),
 
-                const Text(
-                  'Tech Store',
-
+                // =================================================
+                // APP NAME
+                // =================================================
+                Text(
+                  AppStrings.appName(sheetContext),
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -466,13 +673,18 @@ class HelpPage extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                const Text(
-                  'Your one-stop destination for the latest technology products and accessories.',
-
+                // =================================================
+                // DESCRIPTION
+                // =================================================
+                Text(
+                  AppStrings.get(
+                    sheetContext,
+                    en: 'Your one-stop destination for the latest technology products and accessories.',
+                    ar: 'وجهتك المتكاملة لأحدث المنتجات والإكسسوارات التقنية.',
+                  ),
                   textAlign: TextAlign.center,
-
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: secondaryColor,
                     fontSize: 14,
                     height: 1.5,
                   ),
@@ -480,10 +692,16 @@ class HelpPage extends StatelessWidget {
 
                 const SizedBox(height: 15),
 
-                const Text(
-                  'Version 1.0.0',
-
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                // =================================================
+                // VERSION
+                // =================================================
+                Text(
+                  AppStrings.get(
+                    sheetContext,
+                    en: 'Version 1.0.0',
+                    ar: 'الإصدار 1.0.0',
+                  ),
+                  style: TextStyle(color: secondaryColor, fontSize: 12),
                 ),
 
                 const SizedBox(height: 10),
@@ -499,7 +717,16 @@ class HelpPage extends StatelessWidget {
   // SHEET TITLE
   // =========================================================
 
-  Widget _sheetTitle({required IconData icon, required String title}) {
+  Widget _sheetTitle({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+  }) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.titleLarge?.color ?? theme.colorScheme.onSurface;
+
     return Row(
       children: [
         Icon(icon, color: primaryBlue, size: 28),
@@ -509,9 +736,8 @@ class HelpPage extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: textColor,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -525,7 +751,20 @@ class HelpPage extends StatelessWidget {
   // FAQ QUESTION
   // =========================================================
 
-  Widget _faqQuestion(String question, String answer) {
+  Widget _faqQuestion({
+    required BuildContext context,
+    required String question,
+    required String answer,
+  }) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onSurface;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
+        theme.colorScheme.onSurface.withOpacity(0.65);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
 
@@ -535,9 +774,8 @@ class HelpPage extends StatelessWidget {
         children: [
           Text(
             question,
-
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: textColor,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -547,12 +785,7 @@ class HelpPage extends StatelessWidget {
 
           Text(
             answer,
-
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 13,
-              height: 1.5,
-            ),
+            style: TextStyle(color: secondaryColor, fontSize: 13, height: 1.5),
           ),
         ],
       ),
@@ -564,18 +797,31 @@ class HelpPage extends StatelessWidget {
   // =========================================================
 
   Widget _contactOption({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
   }) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onSurface;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
+        theme.colorScheme.onSurface.withOpacity(0.65);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
 
       padding: const EdgeInsets.all(14),
 
       decoration: BoxDecoration(
-        color: const Color(0xFF252525),
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.45),
+
         borderRadius: BorderRadius.circular(14),
+
+        border: Border.all(color: theme.dividerColor),
       ),
 
       child: Row(
@@ -584,27 +830,27 @@ class HelpPage extends StatelessWidget {
 
           const SizedBox(width: 14),
 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-            children: [
-              Text(
-                title,
-
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 3),
+                const SizedBox(height: 3),
 
-              Text(
-                subtitle,
-
-                style: const TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ],
+                Text(
+                  subtitle,
+                  style: TextStyle(color: secondaryColor, fontSize: 12),
+                ),
+              ],
+            ),
           ),
         ],
       ),

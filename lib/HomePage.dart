@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:tech_store/core/constsnts/AppStrings.dart';
 import 'package:tech_store/data/models/PruductModel.dart';
 import 'package:tech_store/features/cart/cubits/CartCubit.dart';
@@ -12,28 +13,21 @@ import 'package:tech_store/features/products/cubits/ProductState.dart';
 import 'package:tech_store/features/settings/cubits/SettingsCubit.dart';
 import 'package:tech_store/features/settings/pages/SettingsPage.dart';
 
-
 class Homepage extends StatefulWidget {
   final String userName;
 
-  const Homepage({
-    super.key,
-    required this.userName,
-  });
+  const Homepage({super.key, required this.userName});
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  static const Color primaryBlue =
-      Color(0xFF4C5DFF);
+  static const Color primaryBlue = Color(0xFF4C5DFF);
 
-  final PageController _bannerController =
-      PageController();
+  final PageController _bannerController = PageController();
 
-  final TextEditingController _searchController =
-      TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   Timer? _autoScrollTimer;
 
@@ -58,34 +52,13 @@ class _HomepageState extends State<Homepage> {
   // =========================================================
 
   final List<Map<String, String>> categories = [
-    {
-      'name': 'All',
-      'api': '',
-    },
-    {
-      'name': 'Laptops',
-      'api': 'laptops',
-    },
-    {
-      'name': 'Smartphones',
-      'api': 'smartphones',
-    },
-    {
-      'name': 'Tablets',
-      'api': 'tablets',
-    },
-    {
-      'name': 'Accessories',
-      'api': 'mobile-accessories',
-    },
-    {
-      'name': 'Gaming',
-      'api': 'gaming',
-    },
-    {
-      'name': 'Wearables',
-      'api': 'mens-watches',
-    },
+    {'name': 'All', 'api': ''},
+    {'name': 'Laptops', 'api': 'laptops'},
+    {'name': 'Smartphones', 'api': 'smartphones'},
+    {'name': 'Tablets', 'api': 'tablets'},
+    {'name': 'Accessories', 'api': 'mobile-accessories'},
+    {'name': 'Gaming', 'api': 'gaming'},
+    {'name': 'Wearables', 'api': 'mens-watches'},
   ];
 
   // =========================================================
@@ -102,30 +75,23 @@ class _HomepageState extends State<Homepage> {
       context.read<ProductCubit>().getProducts();
     });
 
-    _autoScrollTimer = Timer.periodic(
-      const Duration(seconds: 4),
-      (timer) {
-        if (!mounted) return;
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      if (!mounted) return;
 
-        if (!_bannerController.hasClients) {
-          return;
-        }
+      if (!_bannerController.hasClients) return;
 
-        int nextPage = currentBanner + 1;
+      int nextPage = currentBanner + 1;
 
-        if (nextPage >= banners.length) {
-          nextPage = 0;
-        }
+      if (nextPage >= banners.length) {
+        nextPage = 0;
+      }
 
-        _bannerController.animateToPage(
-          nextPage,
-          duration: const Duration(
-            milliseconds: 500,
-          ),
-          curve: Curves.easeInOut,
-        );
-      },
-    );
+      _bannerController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   // =========================================================
@@ -139,104 +105,53 @@ class _HomepageState extends State<Homepage> {
         final theme = Theme.of(context);
 
         return Scaffold(
-          backgroundColor:
-              theme.scaffoldBackgroundColor,
-
+          backgroundColor: theme.scaffoldBackgroundColor,
           body: _buildCurrentPage(),
-
-          bottomNavigationBar:
-              NavigationBar(
+          bottomNavigationBar: NavigationBar(
             backgroundColor:
-                theme.navigationBarTheme
-                        .backgroundColor ??
-                    theme.cardColor,
-
+                theme.navigationBarTheme.backgroundColor ?? theme.cardColor,
             indicatorColor: primaryBlue,
-
             selectedIndex: currentIndex,
-
-            onDestinationSelected:
-                (index) {
+            onDestinationSelected: (index) {
               setState(() {
                 currentIndex = index;
               });
             },
-
             destinations: [
               NavigationDestination(
                 icon: Icon(
                   Icons.home_outlined,
-                  color: theme
-                      .iconTheme
-                      .color
-                      ?.withOpacity(0.6),
+                  color: theme.iconTheme.color?.withOpacity(0.6),
                 ),
-                selectedIcon:
-                    const Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-                label: AppStrings.get(
-                  context,
-                  'home',
-                ),
+                selectedIcon: const Icon(Icons.home, color: Colors.white),
+                label: AppStrings.home(context),
               ),
-
               NavigationDestination(
                 icon: Icon(
                   Icons.favorite_border,
-                  color: theme
-                      .iconTheme
-                      .color
-                      ?.withOpacity(0.6),
+                  color: theme.iconTheme.color?.withOpacity(0.6),
                 ),
-                selectedIcon:
-                    const Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                ),
-                label: AppStrings.get(
-                  context,
-                  'favorites',
-                ),
+                selectedIcon: const Icon(Icons.favorite, color: Colors.white),
+                label: AppStrings.favorites(context),
               ),
-
               NavigationDestination(
                 icon: Icon(
                   Icons.shopping_cart_outlined,
-                  color: theme
-                      .iconTheme
-                      .color
-                      ?.withOpacity(0.6),
+                  color: theme.iconTheme.color?.withOpacity(0.6),
                 ),
-                selectedIcon:
-                    const Icon(
+                selectedIcon: const Icon(
                   Icons.shopping_cart,
                   color: Colors.white,
                 ),
-                label: AppStrings.get(
-                  context,
-                  'cart',
-                ),
+                label: AppStrings.cart(context),
               ),
-
               NavigationDestination(
                 icon: Icon(
                   Icons.settings_outlined,
-                  color: theme
-                      .iconTheme
-                      .color
-                      ?.withOpacity(0.6),
+                  color: theme.iconTheme.color?.withOpacity(0.6),
                 ),
-                selectedIcon:
-                    const Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                ),
-                label: AppStrings.get(
-                  context,
-                  'settings',
-                ),
+                selectedIcon: const Icon(Icons.settings, color: Colors.white),
+                label: AppStrings.settings(context),
               ),
             ],
           ),
@@ -275,67 +190,43 @@ class _HomepageState extends State<Homepage> {
   Widget _homePage() {
     final theme = Theme.of(context);
 
-    final textColor =
-        theme.textTheme.bodyLarge?.color ??
-            Colors.white;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
 
     final secondaryColor =
-        theme.textTheme.bodyMedium?.color
-                ?.withOpacity(0.65) ??
-            Colors.grey;
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ?? Colors.grey;
 
     return SafeArea(
       child: SingleChildScrollView(
-        physics:
-            const BouncingScrollPhysics(),
-
+        physics: const BouncingScrollPhysics(),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
 
             // =================================================
             // GREETING
             // =================================================
-
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                AppStrings.get(
-                  context,
-                  'helloWelcome',
-                ),
-
-                style: TextStyle(
-                  color: secondaryColor,
-                  fontSize: 13,
-                ),
+                AppStrings.greeting(context),
+                style: TextStyle(color: secondaryColor, fontSize: 13),
               ),
             ),
 
             Padding(
-              padding:
-                  const EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 left: 20,
                 right: 20,
                 top: 4,
                 bottom: 18,
               ),
-
               child: Text(
-                widget.userName,
-
+                widget.userName.isEmpty ? 'User' : widget.userName,
                 style: TextStyle(
                   color: textColor,
                   fontSize: 25,
-                  fontWeight:
-                      FontWeight.bold,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -343,62 +234,32 @@ class _HomepageState extends State<Homepage> {
             // =================================================
             // BANNERS
             // =================================================
-
             SizedBox(
               height: 165,
-
               child: PageView.builder(
-                controller:
-                    _bannerController,
-
-                itemCount:
-                    banners.length,
-
-                onPageChanged:
-                    (index) {
+                controller: _bannerController,
+                itemCount: banners.length,
+                onPageChanged: (index) {
                   if (!mounted) return;
 
                   setState(() {
-                    currentBanner =
-                        index;
+                    currentBanner = index;
                   });
                 },
-
-                itemBuilder:
-                    (context, index) {
+                itemBuilder: (context, index) {
                   return Padding(
-                    padding:
-                        const EdgeInsets
-                            .symmetric(
-                      horizontal: 20,
-                    ),
-
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(
-                        18,
-                      ),
-
+                      borderRadius: BorderRadius.circular(18),
                       child: Image.asset(
                         banners[index],
-
                         fit: BoxFit.cover,
-
-                        errorBuilder:
-                            (
-                          context,
-                          error,
-                          stackTrace,
-                        ) {
+                        errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            color:
-                                theme.cardColor,
-
+                            color: theme.cardColor,
                             child: Icon(
-                              Icons
-                                  .image_not_supported,
-                              color:
-                                  secondaryColor,
+                              Icons.image_not_supported,
+                              color: secondaryColor,
                               size: 40,
                             ),
                           );
@@ -415,50 +276,22 @@ class _HomepageState extends State<Homepage> {
             // =================================================
             // DOTS
             // =================================================
-
             Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(banners.length, (index) {
+                final active = currentBanner == index;
 
-              children:
-                  List.generate(
-                banners.length,
-                (index) {
-                  final active =
-                      currentBanner == index;
-
-                  return AnimatedContainer(
-                    duration:
-                        const Duration(
-                      milliseconds: 250,
-                    ),
-
-                    margin:
-                        const EdgeInsets
-                            .symmetric(
-                      horizontal: 3,
-                    ),
-
-                    height: 7,
-
-                    width:
-                        active ? 20 : 7,
-
-                    decoration:
-                        BoxDecoration(
-                      color: active
-                          ? primaryBlue
-                          : theme
-                              .dividerColor,
-
-                      borderRadius:
-                          BorderRadius.circular(
-                        10,
-                      ),
-                    ),
-                  );
-                },
-              ),
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                  height: 7,
+                  width: active ? 20 : 7,
+                  decoration: BoxDecoration(
+                    color: active ? primaryBlue : theme.dividerColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                );
+              }),
             ),
 
             const SizedBox(height: 20),
@@ -466,87 +299,34 @@ class _HomepageState extends State<Homepage> {
             // =================================================
             // SEARCH
             // =================================================
-
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-                controller:
-                    _searchController,
+                controller: _searchController,
+                style: TextStyle(color: textColor),
+                onSubmitted: (value) {
+                  final search = value.trim();
 
-                style: TextStyle(
-                  color: textColor,
-                ),
-
-                onSubmitted:
-                    (value) {
-                  if (value
-                      .trim()
-                      .isEmpty) {
-                    context
-                        .read<ProductCubit>()
-                        .getProducts();
-
+                  if (search.isEmpty) {
+                    context.read<ProductCubit>().getProducts();
                     return;
                   }
 
-                  context
-                      .read<ProductCubit>()
-                      .searchProducts(
-                        value.trim(),
-                      );
+                  context.read<ProductCubit>().searchProducts(search);
                 },
-
-                decoration:
-                    InputDecoration(
-                  hintText:
-                      AppStrings.get(
-                    context,
-                    'searchProducts',
-                  ),
-
-                  hintStyle:
-                      TextStyle(
-                    color: secondaryColor,
-                  ),
-
-                  prefixIcon:
-                      Icon(
-                    Icons.search,
-                    color: secondaryColor,
-                  ),
-
+                decoration: InputDecoration(
+                  hintText: AppStrings.searchProducts(context),
+                  hintStyle: TextStyle(color: secondaryColor),
+                  prefixIcon: Icon(Icons.search, color: secondaryColor),
                   filled: true,
-
-                  fillColor:
-                      theme.cardColor,
-
-                  enabledBorder:
-                      OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(
-                      14,
-                    ),
-
-                    borderSide:
-                        BorderSide(
-                      color:
-                          theme.dividerColor,
-                    ),
+                  fillColor: theme.cardColor,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: theme.dividerColor),
                   ),
-
-                  focusedBorder:
-                      OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(
-                      14,
-                    ),
-
-                    borderSide:
-                        const BorderSide(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(
                       color: primaryBlue,
                       width: 1.5,
                     ),
@@ -560,24 +340,14 @@ class _HomepageState extends State<Homepage> {
             // =================================================
             // CATEGORIES
             // =================================================
-
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                AppStrings.get(
-                  context,
-                  'categories',
-                ),
-
+                AppStrings.categories(context),
                 style: TextStyle(
                   color: textColor,
                   fontSize: 20,
-                  fontWeight:
-                      FontWeight.bold,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -586,99 +356,74 @@ class _HomepageState extends State<Homepage> {
 
             SizedBox(
               height: 42,
-
               child: ListView.builder(
-                scrollDirection:
-                    Axis.horizontal,
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final selected = selectedCategory == index;
 
-                padding:
-                    const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
+                  String categoryName;
 
-                itemCount:
-                    categories.length,
-
-                itemBuilder:
-                    (context, index) {
-                  final category =
-                      categories[index];
-
-                  final selected =
-                      selectedCategory ==
-                          index;
+                  switch (index) {
+                    case 0:
+                      categoryName = AppStrings.all(context);
+                      break;
+                    case 1:
+                      categoryName = AppStrings.laptops(context);
+                      break;
+                    case 2:
+                      categoryName = AppStrings.smartphones(context);
+                      break;
+                    case 3:
+                      categoryName = AppStrings.tablets(context);
+                      break;
+                    case 4:
+                      categoryName = AppStrings.accessories(context);
+                      break;
+                    case 5:
+                      categoryName = AppStrings.gaming(context);
+                      break;
+                    case 6:
+                      categoryName = AppStrings.wearables(context);
+                      break;
+                    default:
+                      categoryName = categories[index]['name'] ?? '';
+                  }
 
                   return Padding(
-                    padding:
-                        const EdgeInsets.only(
-                      right: 10,
-                    ),
-
-                    child:
-                        ElevatedButton(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          selectedCategory =
-                              index;
+                          selectedCategory = index;
                         });
 
-                        final api =
-                            category['api'] ?? '';
+                        final api = categories[index]['api'] ?? '';
 
                         if (api.isEmpty) {
-                          context
-                              .read<ProductCubit>()
-                              .getProducts();
+                          context.read<ProductCubit>().getProducts();
                         } else {
-                          context
-                              .read<ProductCubit>()
-                              .getProductsByCategory(
-                                api,
-                              );
+                          context.read<ProductCubit>().getProductsByCategory(
+                            api,
+                          );
                         }
                       },
-
-                      style:
-                          ElevatedButton.styleFrom(
-                        backgroundColor:
-                            selected
-                                ? primaryBlue
-                                : theme.cardColor,
-
-                        foregroundColor:
-                            selected
-                                ? Colors.white
-                                : textColor,
-
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: selected
+                            ? primaryBlue
+                            : theme.cardColor,
+                        foregroundColor: selected ? Colors.white : textColor,
                         elevation: 0,
-
                         side: selected
                             ? null
-                            : BorderSide(
-                                color: theme
-                                    .dividerColor,
-                              ),
-
-                        padding:
-                            const EdgeInsets
-                                .symmetric(
-                          horizontal: 18,
-                        ),
-
-                        shape:
-                            RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(
-                            12,
-                          ),
+                            : BorderSide(color: theme.dividerColor),
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-
-                      child:
-                          Text(
-                        category['name'] ??
-                            '',
-                      ),
+                      child: Text(categoryName),
                     ),
                   );
                 },
@@ -690,24 +435,14 @@ class _HomepageState extends State<Homepage> {
             // =================================================
             // PRODUCTS TITLE
             // =================================================
-
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                AppStrings.get(
-                  context,
-                  'popularProducts',
-                ),
-
+                AppStrings.products(context),
                 style: TextStyle(
                   color: textColor,
                   fontSize: 20,
-                  fontWeight:
-                      FontWeight.bold,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -717,43 +452,20 @@ class _HomepageState extends State<Homepage> {
             // =================================================
             // PRODUCTS
             // =================================================
-
-            BlocBuilder<
-                ProductCubit,
-                ProductState>(
-              builder:
-                  (context, state) {
-
-                // =============================================
-                // LOADING
-                // =============================================
-
-                if (state
-                    is ProductLoading) {
+            BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
                   return const SizedBox(
                     height: 250,
-
                     child: Center(
-                      child:
-                          CircularProgressIndicator(
-                        color: primaryBlue,
-                      ),
+                      child: CircularProgressIndicator(color: primaryBlue),
                     ),
                   );
                 }
 
-                // =============================================
-                // ERROR
-                // =============================================
-
-                if (state
-                    is ProductError) {
+                if (state is ProductError) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.all(
-                      20,
-                    ),
-
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         const Icon(
@@ -761,106 +473,48 @@ class _HomepageState extends State<Homepage> {
                           color: Colors.red,
                           size: 50,
                         ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
-
+                        const SizedBox(height: 10),
                         Text(
-                          AppStrings.get(
-                            context,
-                            'somethingWentWrong',
-                          ),
-
-                          style:
-                              TextStyle(
-                            color:
-                                textColor,
-                            fontSize: 16,
-                          ),
+                          AppStrings.error(context),
+                          style: TextStyle(color: textColor, fontSize: 16),
                         ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
-
+                        const SizedBox(height: 10),
                         Text(
                           state.message,
-
-                          textAlign:
-                              TextAlign.center,
-
-                          style:
-                              TextStyle(
-                            color:
-                                secondaryColor,
-                          ),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: secondaryColor),
                         ),
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-
+                        const SizedBox(height: 15),
                         ElevatedButton(
-                          onPressed:
-                              () {
-                            context
-                                .read<
-                                    ProductCubit>()
-                                .getProducts();
+                          onPressed: () {
+                            context.read<ProductCubit>().getProducts();
                           },
-
-                          child:
-                              Text(
-                            AppStrings.get(
-                              context,
-                              'tryAgain',
-                            ),
-                          ),
+                          child: Text(AppStrings.retry(context)),
                         ),
                       ],
                     ),
                   );
                 }
 
-                // =============================================
-                // SUCCESS
-                // =============================================
-
-                if (state
-                    is ProductSuccess) {
-                  final products =
-                      state.products;
+                if (state is ProductSuccess) {
+                  final products = state.products;
 
                   if (products.isEmpty) {
                     return SizedBox(
                       height: 200,
-
                       child: Center(
                         child: Text(
-                          AppStrings.get(
-                            context,
-                            'noProductsFound',
-                          ),
-
-                          style:
-                              TextStyle(
-                            color:
-                                secondaryColor,
-                          ),
+                          AppStrings.noProducts(context),
+                          style: TextStyle(color: secondaryColor),
                         ),
                       ),
                     );
                   }
 
-                  return _productsGrid(
-                    products,
-                  );
+                  return _productsGrid(products);
                 }
 
-                return const SizedBox(
-                  height: 200,
-                );
+                return const SizedBox(height: 200);
               },
             ),
 
@@ -875,49 +529,25 @@ class _HomepageState extends State<Homepage> {
   // PRODUCTS GRID
   // =========================================================
 
-  Widget _productsGrid(
-    List<ProductModel> products,
-  ) {
-    final visibleProducts =
-        products.length > 6
-            ? products.sublist(0, 6)
-            : products;
+  Widget _productsGrid(List<ProductModel> products) {
+    final visibleProducts = products.length > 6
+        ? products.sublist(0, 6)
+        : products;
 
     return Padding(
-      padding:
-          const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GridView.builder(
         shrinkWrap: true,
-
-        physics:
-            const NeverScrollableScrollPhysics(),
-
-        itemCount:
-            visibleProducts.length,
-
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: visibleProducts.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-
           crossAxisSpacing: 12,
-
           mainAxisSpacing: 12,
-
-          // زودنا طول الكارت شوية
-          // علشان زرار Add to Cart
-          // و Favorite ما يعملوش overflow
           childAspectRatio: 0.58,
         ),
-
-        itemBuilder:
-            (context, index) {
-          final product =
-              visibleProducts[index];
-
-          return _productCard(product);
+        itemBuilder: (context, index) {
+          return _productCard(visibleProducts[index]);
         },
       ),
     );
@@ -927,167 +557,81 @@ class _HomepageState extends State<Homepage> {
   // PRODUCT CARD
   // =========================================================
 
-  Widget _productCard(
-    ProductModel product,
-  ) {
-    final theme =
-        Theme.of(context);
+  Widget _productCard(ProductModel product) {
+    final theme = Theme.of(context);
 
-    return BlocBuilder<FavoritesCubit,
-        List<ProductModel>>(
+    return BlocBuilder<FavoritesCubit, List<ProductModel>>(
       builder: (context, favorites) {
-
-        final bool isFavorite =
-            favorites.any(
-          (item) =>
-              item.id == product.id,
-        );
+        final isFavorite = favorites.any((item) => item.id == product.id);
 
         return Container(
           decoration: BoxDecoration(
             color: theme.cardColor,
-
-            borderRadius:
-                BorderRadius.circular(
-              16,
-            ),
+            borderRadius: BorderRadius.circular(16),
           ),
-
-          clipBehavior:
-              Clip.antiAlias,
-
+          clipBehavior: Clip.antiAlias,
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
-
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // =================================================
-              // IMAGE + FAVORITE
-              // =================================================
-
+              // IMAGE
               SizedBox(
                 height: 125,
-
                 width: double.infinity,
-
                 child: Stack(
                   children: [
-
                     Container(
-                      width:
-                          double.infinity,
-
-                      height:
-                          double.infinity,
-
+                      width: double.infinity,
+                      height: double.infinity,
                       color: Colors.white,
-
-                      child:
-                          Image.network(
+                      child: Image.network(
                         product.thumbnail,
-
-                        fit:
-                            BoxFit.contain,
-
-                        cacheWidth:
-                            350,
-
-                        cacheHeight:
-                            350,
-
-                        errorBuilder:
-                            (
-                          context,
-                          error,
-                          stackTrace,
-                        ) {
+                        fit: BoxFit.contain,
+                        cacheWidth: 350,
+                        cacheHeight: 350,
+                        errorBuilder: (context, error, stackTrace) {
                           return const Center(
-                            child:
-                                Icon(
-                              Icons
-                                  .image_not_supported,
-                              color:
-                                  Colors.grey,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
                               size: 40,
                             ),
                           );
                         },
-
-                        loadingBuilder:
-                            (
-                          context,
-                          child,
-                          loadingProgress,
-                        ) {
-                          if (loadingProgress ==
-                              null) {
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
                             return child;
                           }
 
                           return const Center(
-                            child:
-                                CircularProgressIndicator(
-                              strokeWidth:
-                                  2,
-                            ),
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           );
                         },
                       ),
                     ),
 
-                    // =================================================
-                    // FAVORITE BUTTON
-                    // =================================================
-
+                    // FAVORITE
                     Positioned(
                       top: 7,
                       right: 7,
-
-                      child:
-                          Material(
-                        color: Colors.white
-                            .withOpacity(
-                          0.92,
-                        ),
-
-                        shape:
-                            const CircleBorder(),
-
-                        child:
-                            IconButton(
-                          constraints:
-                              const BoxConstraints(
+                      child: Material(
+                        color: Colors.white.withOpacity(0.92),
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          constraints: const BoxConstraints(
                             minWidth: 34,
                             minHeight: 34,
                             maxWidth: 34,
                             maxHeight: 34,
                           ),
-
-                          padding:
-                              EdgeInsets.zero,
-
+                          padding: EdgeInsets.zero,
                           onPressed: () {
-                            context
-                                .read<
-                                    FavoritesCubit>()
-                                .toggleFavorite(
-                                  product,
-                                );
+                            context.read<FavoritesCubit>().toggleFavorite(
+                              product,
+                            );
                           },
-
-                          icon:
-                              Icon(
-                            isFavorite
-                                ? Icons.favorite
-                                : Icons
-                                    .favorite_border,
-
-                            color:
-                                isFavorite
-                                    ? Colors.red
-                                    : Colors.grey,
-
+                          icon: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.red : Colors.grey,
                             size: 19,
                           ),
                         ),
@@ -1097,267 +641,113 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
 
-              // =================================================
-              // PRODUCT INFO
-              // =================================================
-
+              // INFO
               Expanded(
-                child:
-                    Padding(
-                  padding:
-                      const EdgeInsets.all(
-                    9,
-                  ),
-
-                  child:
-                      Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-
+                child: Padding(
+                  padding: const EdgeInsets.all(9),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      // =================================================
-                      // TITLE
-                      // =================================================
-
                       Text(
                         product.title,
-
                         maxLines: 2,
-
-                        overflow:
-                            TextOverflow.ellipsis,
-
-                        style:
-                            TextStyle(
-                          color: theme
-                              .textTheme
-                              .bodyLarge
-                              ?.color,
-
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: theme.textTheme.bodyLarge?.color,
                           fontSize: 12.5,
-
-                          fontWeight:
-                              FontWeight.w600,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 5,
-                      ),
-
-                      // =================================================
-                      // RATING
-                      // =================================================
+                      const SizedBox(height: 5),
 
                       Row(
                         children: [
-
-                          const Icon(
-                            Icons.star,
-                            color:
-                                Colors.amber,
-                            size: 14,
-                          ),
-
-                          const SizedBox(
-                            width: 3,
-                          ),
-
+                          const Icon(Icons.star, color: Colors.amber, size: 14),
+                          const SizedBox(width: 3),
                           Text(
-                            product.rating
-                                .toStringAsFixed(
-                              1,
-                            ),
-
-                            style:
-                                TextStyle(
-                              color: theme
-                                  .textTheme
-                                  .bodySmall
-                                  ?.color,
-
-                              fontSize:
-                                  10.5,
+                            product.rating.toStringAsFixed(1),
+                            style: TextStyle(
+                              color: theme.textTheme.bodySmall?.color,
+                              fontSize: 10.5,
                             ),
                           ),
                         ],
                       ),
 
-                      const SizedBox(
-                        height: 3,
-                      ),
-
-                      // =================================================
-                      // PRICE
-                      // =================================================
+                      const SizedBox(height: 3),
 
                       Text(
                         '\$${product.price.toStringAsFixed(2)}',
-
                         maxLines: 1,
-
-                        overflow:
-                            TextOverflow.ellipsis,
-
-                        style:
-                            const TextStyle(
-                          color:
-                              primaryBlue,
-
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: primaryBlue,
                           fontSize: 15,
-
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
 
                       const Spacer(),
 
-                      // =================================================
                       // ADD TO CART
-                      // =================================================
-
-                      BlocBuilder<CartCubit,
-                          List<ProductModel>>(
-                        builder:
-                            (
-                          context,
-                          cart,
-                        ) {
-
-                          final bool
-                              inCart =
-                              cart.any(
-                            (item) =>
-                                item.id ==
-                                product.id,
+                      BlocBuilder<CartCubit, List<ProductModel>>(
+                        builder: (context, cart) {
+                          final inCart = cart.any(
+                            (item) => item.id == product.id,
                           );
 
                           return SizedBox(
-                            width:
-                                double.infinity,
-
+                            width: double.infinity,
                             height: 34,
-
-                            child:
-                                ElevatedButton(
+                            child: ElevatedButton(
                               onPressed: () {
+                                context.read<CartCubit>().addToCart(product);
 
-                                context
-                                    .read<
-                                        CartCubit>()
-                                    .addToCart(
-                                      product,
-                                    );
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).hideCurrentSnackBar();
 
-                                ScaffoldMessenger
-                                    .of(
-                                      context,
-                                    )
-                                    .hideCurrentSnackBar();
-
-                                ScaffoldMessenger
-                                    .of(
-                                      context,
-                                    )
-                                    .showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    duration:
-                                        const Duration(
-                                      milliseconds:
-                                          900,
+                                    duration: const Duration(milliseconds: 900),
+                                    content: Text(
+                                      AppStrings.addedToCart(context),
                                     ),
-
-                                    content:
-                                        Text(
-                                      AppStrings.get(
-                                        context,
-                                        'addedToCart',
-                                      ),
-                                    ),
-
-                                    backgroundColor:
-                                        Colors.green,
+                                    backgroundColor: Colors.green,
                                   ),
                                 );
                               },
-
-                              style:
-                                  ElevatedButton
-                                      .styleFrom(
-                                backgroundColor:
-                                    inCart
-                                        ? Colors.green
-                                        : primaryBlue,
-
-                                foregroundColor:
-                                    Colors.white,
-
-                                elevation:
-                                    0,
-
-                                padding:
-                                    EdgeInsets.zero,
-
-                                shape:
-                                    RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius
-                                          .circular(
-                                    9,
-                                  ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: inCart
+                                    ? Colors.green
+                                    : primaryBlue,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9),
                                 ),
                               ),
-
-                              child:
-                                  FittedBox(
-                                fit:
-                                    BoxFit.scaleDown,
-
-                                child:
-                                    Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .center,
-
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-
                                     Icon(
                                       inCart
-                                          ? Icons
-                                              .check
-                                          : Icons
-                                              .shopping_cart_outlined,
-
-                                      size:
-                                          15,
+                                          ? Icons.check
+                                          : Icons.shopping_cart_outlined,
+                                      size: 15,
                                     ),
-
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-
+                                    const SizedBox(width: 5),
                                     Text(
                                       inCart
-                                          ? AppStrings
-                                              .get(
-                                              context,
-                                              'addedToCart',
-                                            )
-                                          : AppStrings
-                                              .get(
-                                              context,
-                                              'addToCart',
-                                            ),
-
-                                      style:
-                                          const TextStyle(
-                                        fontSize:
-                                            11,
-
-                                        fontWeight:
-                                            FontWeight.bold,
+                                          ? AppStrings.addedToCart(context)
+                                          : AppStrings.addToCart(context),
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
@@ -1383,96 +773,42 @@ class _HomepageState extends State<Homepage> {
   // =========================================================
 
   Widget _favoritesPage() {
-    final theme =
-        Theme.of(context);
+    final theme = Theme.of(context);
 
-    final textColor =
-        theme.textTheme.bodyLarge?.color ??
-            Colors.white;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
 
     final secondaryColor =
-        theme.textTheme.bodyMedium?.color
-                ?.withOpacity(0.65) ??
-            Colors.grey;
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ?? Colors.grey;
 
     return SafeArea(
-      child:
-          BlocBuilder<FavoritesCubit,
-              List<ProductModel>>(
-        builder:
-            (context, favorites) {
-
-          // =================================================
-          // EMPTY
-          // =================================================
-
+      child: BlocBuilder<FavoritesCubit, List<ProductModel>>(
+        builder: (context, favorites) {
           if (favorites.isEmpty) {
             return Center(
-              child:
-                  Padding(
-                padding:
-                    const EdgeInsets
-                        .symmetric(
-                  horizontal: 30,
-                ),
-
-                child:
-                    Column(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .center,
-
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
                     const Icon(
-                      Icons
-                          .favorite_border,
-                      color:
-                          primaryBlue,
+                      Icons.favorite_border,
+                      color: primaryBlue,
                       size: 80,
                     ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-
+                    const SizedBox(height: 20),
                     Text(
-                      AppStrings.get(
-                        context,
-                        'favorites',
-                      ),
-
-                      style:
-                          TextStyle(
-                        color:
-                            textColor,
-                        fontSize:
-                            26,
-                        fontWeight:
-                            FontWeight.bold,
+                      AppStrings.favorites(context),
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-
-                    const SizedBox(
-                      height: 8,
-                    ),
-
+                    const SizedBox(height: 8),
                     Text(
-                      AppStrings.get(
-                        context,
-                        'favoriteEmpty',
-                      ),
-
-                      textAlign:
-                          TextAlign.center,
-
-                      style:
-                          TextStyle(
-                        color:
-                            secondaryColor,
-                        fontSize:
-                            14,
-                      ),
+                      AppStrings.favoriteEmpty(context),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: secondaryColor, fontSize: 14),
                     ),
                   ],
                 ),
@@ -1480,78 +816,36 @@ class _HomepageState extends State<Homepage> {
             );
           }
 
-          // =================================================
-          // FAVORITES GRID
-          // =================================================
-
           return Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
-
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Padding(
-                padding:
-                    const EdgeInsets
-                        .fromLTRB(
-                  20,
-                  20,
-                  20,
-                  15,
-                ),
-
-                child:
-                    Text(
-                  AppStrings.get(
-                    context,
-                    'favorites',
-                  ),
-
-                  style:
-                      TextStyle(
-                    color:
-                        textColor,
-                    fontSize:
-                        26,
-                    fontWeight:
-                        FontWeight.bold,
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 15),
+                child: Text(
+                  AppStrings.favorites(context),
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
 
               Expanded(
-                child:
-                    GridView.builder(
-                  padding:
-                      const EdgeInsets
-                          .symmetric(
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 5,
                   ),
-
-                  itemCount:
-                      favorites.length,
-
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount:
-                        2,
-
-                    crossAxisSpacing:
-                        12,
-
-                    mainAxisSpacing:
-                        12,
-
-                    childAspectRatio:
-                        0.58,
+                  itemCount: favorites.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.58,
                   ),
-
-                  itemBuilder:
-                      (context, index) {
-                    return _favoriteCard(
-                      favorites[index],
-                    );
+                  itemBuilder: (context, index) {
+                    return _favoriteCard(favorites[index]);
                   },
                 ),
               ),
@@ -1566,71 +860,34 @@ class _HomepageState extends State<Homepage> {
   // FAVORITE CARD
   // =========================================================
 
-  Widget _favoriteCard(
-    ProductModel product,
-  ) {
-    final theme =
-        Theme.of(context);
+  Widget _favoriteCard(ProductModel product) {
+    final theme = Theme.of(context);
 
     return Container(
-      decoration:
-          BoxDecoration(
-        color:
-            theme.cardColor,
-
-        borderRadius:
-            BorderRadius.circular(
-          16,
-        ),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(16),
       ),
-
-      clipBehavior:
-          Clip.antiAlias,
-
-      child:
-          Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           SizedBox(
             height: 125,
-
-            width:
-                double.infinity,
-
-            child:
-                Stack(
+            width: double.infinity,
+            child: Stack(
               children: [
-
                 Container(
-                  width:
-                      double.infinity,
-
-                  color:
-                      Colors.white,
-
-                  child:
-                      Image.network(
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Image.network(
                     product.thumbnail,
-
-                    fit:
-                        BoxFit.contain,
-
-                    errorBuilder:
-                        (
-                      context,
-                      error,
-                      stackTrace,
-                    ) {
+                    fit: BoxFit.contain,
+                    errorBuilder: (_, __, ___) {
                       return const Center(
-                        child:
-                            Icon(
-                          Icons
-                              .image_not_supported,
-                          color:
-                              Colors.grey,
+                        child: Icon(
+                          Icons.image_not_supported,
+                          color: Colors.grey,
                           size: 40,
                         ),
                       );
@@ -1641,42 +898,23 @@ class _HomepageState extends State<Homepage> {
                 Positioned(
                   top: 7,
                   right: 7,
-
-                  child:
-                      Material(
-                    color:
-                        Colors.white,
-
-                    shape:
-                        const CircleBorder(),
-
-                    child:
-                        IconButton(
-                      constraints:
-                          const BoxConstraints(
+                  child: Material(
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    child: IconButton(
+                      constraints: const BoxConstraints(
                         minWidth: 34,
                         minHeight: 34,
                         maxWidth: 34,
                         maxHeight: 34,
                       ),
-
-                      padding:
-                          EdgeInsets.zero,
-
+                      padding: EdgeInsets.zero,
                       onPressed: () {
-                        context
-                            .read<
-                                FavoritesCubit>()
-                            .toggleFavorite(
-                              product,
-                            );
+                        context.read<FavoritesCubit>().toggleFavorite(product);
                       },
-
-                      icon:
-                          const Icon(
+                      icon: const Icon(
                         Icons.favorite,
-                        color:
-                            Colors.red,
+                        color: Colors.red,
                         size: 19,
                       ),
                     ),
@@ -1687,41 +925,19 @@ class _HomepageState extends State<Homepage> {
           ),
 
           Expanded(
-            child:
-                Padding(
-              padding:
-                  const EdgeInsets.all(
-                9,
-              ),
-
-              child:
-                  Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-
+            child: Padding(
+              padding: const EdgeInsets.all(9),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Text(
                     product.title,
-
-                    maxLines:
-                        2,
-
-                    overflow:
-                        TextOverflow.ellipsis,
-
-                    style:
-                        TextStyle(
-                      color: theme
-                          .textTheme
-                          .bodyLarge
-                          ?.color,
-
-                      fontSize:
-                          12.5,
-
-                      fontWeight:
-                          FontWeight.w600,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: theme.textTheme.bodyLarge?.color,
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
 
@@ -1729,131 +945,52 @@ class _HomepageState extends State<Homepage> {
 
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
-
-                    style:
-                        const TextStyle(
-                      color:
-                          primaryBlue,
-
-                      fontSize:
-                          15,
-
-                      fontWeight:
-                          FontWeight.bold,
+                    style: const TextStyle(
+                      color: primaryBlue,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
 
-                  const SizedBox(
-                    height: 6,
-                  ),
+                  const SizedBox(height: 6),
 
                   SizedBox(
-                    width:
-                        double.infinity,
-
-                    height:
-                        34,
-
-                    child:
-                        ElevatedButton(
+                    width: double.infinity,
+                    height: 34,
+                    child: ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<
-                                CartCubit>()
-                            .addToCart(
-                              product,
-                            );
+                        context.read<CartCubit>().addToCart(product);
 
-                        ScaffoldMessenger
-                            .of(
-                              context,
-                            )
-                            .hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-                        ScaffoldMessenger
-                            .of(
-                              context,
-                            )
-                            .showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            duration:
-                                const Duration(
-                              milliseconds:
-                                  900,
-                            ),
-
-                            content:
-                                Text(
-                              AppStrings.get(
-                                context,
-                                'addedToCart',
-                              ),
-                            ),
-
-                            backgroundColor:
-                                Colors.green,
+                            duration: const Duration(milliseconds: 900),
+                            content: Text(AppStrings.addedToCart(context)),
+                            backgroundColor: Colors.green,
                           ),
                         );
                       },
-
-                      style:
-                          ElevatedButton
-                              .styleFrom(
-                        backgroundColor:
-                            primaryBlue,
-
-                        foregroundColor:
-                            Colors.white,
-
-                        elevation:
-                            0,
-
-                        padding:
-                            EdgeInsets.zero,
-
-                        shape:
-                            RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius
-                                  .circular(
-                            9,
-                          ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryBlue,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
                         ),
                       ),
-
-                      child:
-                          FittedBox(
-                        child:
-                            Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment
-                                  .center,
-
+                      child: FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
-                            const Icon(
-                              Icons
-                                  .shopping_cart_outlined,
-                              size: 15,
-                            ),
-
-                            const SizedBox(
-                              width: 5,
-                            ),
-
+                            const Icon(Icons.shopping_cart_outlined, size: 15),
+                            const SizedBox(width: 5),
                             Text(
-                              AppStrings.get(
-                                context,
-                                'addToCart',
-                              ),
-
-                              style:
-                                  const TextStyle(
-                                fontSize:
-                                    11,
-
-                                fontWeight:
-                                    FontWeight.bold,
+                              AppStrings.addToCart(context),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -1875,271 +1012,234 @@ class _HomepageState extends State<Homepage> {
   // =========================================================
 
   Widget _cartPage() {
-  final theme = Theme.of(context);
-  final cart = context.watch<CartCubit>().state;
+    final theme = Theme.of(context);
+    final cart = context.watch<CartCubit>().state;
 
-  final textColor =
-      theme.textTheme.bodyLarge?.color ?? Colors.white;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
 
-  final secondaryColor =
-      theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
-          Colors.grey;
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ?? Colors.grey;
 
-  if (cart.isEmpty) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.shopping_cart_outlined,
-              color: primaryBlue,
-              size: 80,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              AppStrings.get(context, 'yourCart'),
-              style: TextStyle(
-                color: textColor,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              AppStrings.get(context, 'cartEmpty'),
-              style: TextStyle(
-                color: secondaryColor,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  final cartCubit = context.read<CartCubit>();
-  final total = cartCubit.getTotal();
-
-  return SafeArea(
-    child: Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(20),
-            itemCount: cart.length,
-            itemBuilder: (context, index) {
-              final product = cart[index];
-              final quantity =
-                  cartCubit.getQuantity(product);
-
-              return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: theme.cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            BorderRadius.circular(12),
-                      ),
-                      child: Image.network(
-                        product.thumbnail,
-                        fit: BoxFit.contain,
-                        errorBuilder:
-                            (_, __, ___) {
-                          return const Icon(
-                            Icons.image_not_supported,
-                          );
-                        },
-                      ),
-                    ),
-
-                    const SizedBox(width: 12),
-
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            product.title,
-                            maxLines: 2,
-                            overflow:
-                                TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: textColor,
-                              fontWeight:
-                                  FontWeight.bold,
-                            ),
-                          ),
-
-                          const SizedBox(height: 6),
-
-                          Text(
-                            '\$${product.price.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              color: primaryBlue,
-                              fontWeight:
-                                  FontWeight.bold,
-                            ),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  cartCubit
-                                      .decreaseQuantity(
-                                    product,
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.remove_circle_outline,
-                                ),
-                              ),
-
-                              Text(
-                                '$quantity',
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontWeight:
-                                      FontWeight.bold,
-                                ),
-                              ),
-
-                              IconButton(
-                                onPressed: () {
-                                  cartCubit
-                                      .increaseQuantity(
-                                    product,
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.add_circle_outline,
-                                ),
-                              ),
-
-                              const Spacer(),
-
-                              IconButton(
-                                onPressed: () {
-                                  cartCubit
-                                      .removeFromCart(
-                                    product,
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.delete_outline,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-
-        // ================= TOTAL + CHECKOUT =================
-
-        Container(
-          padding: const EdgeInsets.fromLTRB(
-            20,
-            15,
-            20,
-            20,
-          ),
-          decoration: BoxDecoration(
-            color: theme.cardColor,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
+    if (cart.isEmpty) {
+      return SafeArea(
+        child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total',
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '\$${total.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: primaryBlue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+              const Icon(
+                Icons.shopping_cart_outlined,
+                color: primaryBlue,
+                size: 80,
               ),
-
-              const SizedBox(height: 14),
-
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.push('/checkout');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape:
-                        RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: const Text(
-                    'Checkout',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              const SizedBox(height: 20),
+              Text(
+                AppStrings.yourCart(context),
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                AppStrings.cartEmpty(context),
+                style: TextStyle(color: secondaryColor, fontSize: 14),
               ),
             ],
           ),
         ),
-      ],
-    ),
-  );
-}
+      );
+    }
+
+    final cartCubit = context.read<CartCubit>();
+
+    final total = cartCubit.getTotal();
+
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(20),
+              itemCount: cart.length,
+              itemBuilder: (context, index) {
+                final product = cart[index];
+
+                final quantity = cartCubit.getQuantity(product);
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: theme.cardColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Image.network(
+                          product.thumbnail,
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, __, ___) {
+                            return const Icon(Icons.image_not_supported);
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(width: 12),
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: textColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            const SizedBox(height: 6),
+
+                            Text(
+                              '\$${product.price.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: primaryBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            const SizedBox(height: 8),
+
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    cartCubit.decreaseQuantity(product);
+                                  },
+                                  icon: const Icon(Icons.remove_circle_outline),
+                                ),
+
+                                Text(
+                                  '$quantity',
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+
+                                IconButton(
+                                  onPressed: () {
+                                    cartCubit.increaseQuantity(product);
+                                  },
+                                  icon: const Icon(Icons.add_circle_outline),
+                                ),
+
+                                const Spacer(),
+
+                                IconButton(
+                                  onPressed: () {
+                                    cartCubit.removeFromCart(product);
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // TOTAL + CHECKOUT
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 20),
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppStrings.total(context),
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '\$${total.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        color: primaryBlue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 14),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.push('/checkout');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryBlue,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: Text(
+                      AppStrings.checkout(context),
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   // =========================================================
   // SETTINGS
   // =========================================================
 
   Widget _settingsPage() {
-    return SettingsPage(
-      userName: widget.userName,
-    );
+    return SettingsPage(userName: widget.userName);
   }
 
   // =========================================================
@@ -2149,9 +1249,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void dispose() {
     _autoScrollTimer?.cancel();
-
     _bannerController.dispose();
-
     _searchController.dispose();
 
     super.dispose();

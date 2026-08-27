@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppStrings {
+  // =========================================================
+  // LANGUAGE
+  // =========================================================
+
   static bool isArabic(BuildContext context) {
     return Localizations.localeOf(context).languageCode == 'ar';
   }
@@ -47,6 +51,13 @@ class AppStrings {
   static String retry(BuildContext context) =>
       get(context, en: 'Retry', ar: 'إعادة المحاولة');
 
+  static String somethingWentWrong(BuildContext context) =>
+      get(
+        context,
+        en: 'Something went wrong',
+        ar: 'حدث خطأ ما',
+      );
+
   // =========================================================
   // HOME
   // =========================================================
@@ -55,13 +66,28 @@ class AppStrings {
       get(context, en: 'Home', ar: 'الرئيسية');
 
   static String greeting(BuildContext context) =>
-      get(context, en: 'Welcome back,', ar: 'مرحباً بعودتك،');
+      get(
+        context,
+        en: 'Welcome back,',
+        ar: 'مرحباً بعودتك،',
+      );
+
+  static String helloWelcome(BuildContext context) =>
+      get(
+        context,
+        en: 'Welcome back,',
+        ar: 'مرحباً بعودتك،',
+      );
 
   static String search(BuildContext context) =>
       get(context, en: 'Search', ar: 'بحث');
 
   static String searchProducts(BuildContext context) =>
-      get(context, en: 'Search products...', ar: 'ابحث عن المنتجات...');
+      get(
+        context,
+        en: 'Search products...',
+        ar: 'ابحث عن المنتجات...',
+      );
 
   static String products(BuildContext context) =>
       get(context, en: 'Products', ar: 'المنتجات');
@@ -69,29 +95,71 @@ class AppStrings {
   static String categories(BuildContext context) =>
       get(context, en: 'Categories', ar: 'الفئات');
 
+  static String popularProducts(BuildContext context) =>
+      get(
+        context,
+        en: 'Popular Products',
+        ar: 'المنتجات الأكثر شعبية',
+      );
+
   static String all(BuildContext context) =>
       get(context, en: 'All', ar: 'الكل');
 
   static String laptops(BuildContext context) =>
-      get(context, en: 'Laptops', ar: 'أجهزة اللابتوب');
+      get(
+        context,
+        en: 'Laptops',
+        ar: 'أجهزة اللابتوب',
+      );
 
   static String smartphones(BuildContext context) =>
-      get(context, en: 'Smartphones', ar: 'الهواتف الذكية');
+      get(
+        context,
+        en: 'Smartphones',
+        ar: 'الهواتف الذكية',
+      );
 
   static String tablets(BuildContext context) =>
-      get(context, en: 'Tablets', ar: 'الأجهزة اللوحية');
+      get(
+        context,
+        en: 'Tablets',
+        ar: 'الأجهزة اللوحية',
+      );
 
   static String accessories(BuildContext context) =>
-      get(context, en: 'Accessories', ar: 'الإكسسوارات');
+      get(
+        context,
+        en: 'Accessories',
+        ar: 'الإكسسوارات',
+      );
 
   static String gaming(BuildContext context) =>
-      get(context, en: 'Gaming', ar: 'الألعاب');
+      get(
+        context,
+        en: 'Gaming',
+        ar: 'الألعاب',
+      );
 
   static String wearables(BuildContext context) =>
-      get(context, en: 'Wearables', ar: 'الأجهزة القابلة للارتداء');
+      get(
+        context,
+        en: 'Wearables',
+        ar: 'الأجهزة القابلة للارتداء',
+      );
 
   static String noProducts(BuildContext context) =>
-      get(context, en: 'No products found', ar: 'لم يتم العثور على منتجات');
+      get(
+        context,
+        en: 'No products found',
+        ar: 'لم يتم العثور على منتجات',
+      );
+
+  static String noProductsFound(BuildContext context) =>
+      get(
+        context,
+        en: 'No products found',
+        ar: 'لم يتم العثور على منتجات',
+      );
 
   static String failedToLoadProducts(BuildContext context) =>
       get(
@@ -100,31 +168,62 @@ class AppStrings {
         ar: 'فشل تحميل المنتجات',
       );
 
+  static String tryAgain(BuildContext context) =>
+      get(
+        context,
+        en: 'Try Again',
+        ar: 'حاول مرة أخرى',
+      );
+
   // =========================================================
   // PRODUCT
   // =========================================================
 
   static String addToCart(BuildContext context) =>
-      get(context, en: 'Add to Cart', ar: 'أضف إلى السلة');
+      get(
+        context,
+        en: 'Add to Cart',
+        ar: 'أضف إلى السلة',
+      );
 
   static String addedToCart(BuildContext context) =>
-      get(context, en: 'Added to Cart', ar: 'تمت الإضافة إلى السلة');
+      get(
+        context,
+        en: 'Added to Cart',
+        ar: 'تمت الإضافة إلى السلة',
+      );
 
   static String inCart(BuildContext context) =>
-      get(context, en: 'In Cart', ar: 'في السلة');
+      get(
+        context,
+        en: 'In Cart',
+        ar: 'في السلة',
+      );
 
   static String rating(BuildContext context) =>
-      get(context, en: 'Rating', ar: 'التقييم');
+      get(
+        context,
+        en: 'Rating',
+        ar: 'التقييم',
+      );
 
   static String price(BuildContext context) =>
-      get(context, en: 'Price', ar: 'السعر');
+      get(
+        context,
+        en: 'Price',
+        ar: 'السعر',
+      );
 
   // =========================================================
   // FAVORITES
   // =========================================================
 
   static String favorites(BuildContext context) =>
-      get(context, en: 'Favorites', ar: 'المفضلة');
+      get(
+        context,
+        en: 'Favorites',
+        ar: 'المفضلة',
+      );
 
   static String noFavorites(BuildContext context) =>
       get(
@@ -145,10 +244,18 @@ class AppStrings {
   // =========================================================
 
   static String cart(BuildContext context) =>
-      get(context, en: 'Cart', ar: 'السلة');
+      get(
+        context,
+        en: 'Cart',
+        ar: 'السلة',
+      );
 
   static String yourCart(BuildContext context) =>
-      get(context, en: 'Your Cart', ar: 'سلة التسوق');
+      get(
+        context,
+        en: 'Your Cart',
+        ar: 'سلة التسوق',
+      );
 
   static String cartEmpty(BuildContext context) =>
       get(
@@ -158,29 +265,57 @@ class AppStrings {
       );
 
   static String checkout(BuildContext context) =>
-      get(context, en: 'Checkout', ar: 'إتمام الشراء');
+      get(
+        context,
+        en: 'Checkout',
+        ar: 'إتمام الشراء',
+      );
 
   static String total(BuildContext context) =>
-      get(context, en: 'Total', ar: 'الإجمالي');
+      get(
+        context,
+        en: 'Total',
+        ar: 'الإجمالي',
+      );
 
   static String quantity(BuildContext context) =>
-      get(context, en: 'Quantity', ar: 'الكمية');
+      get(
+        context,
+        en: 'Quantity',
+        ar: 'الكمية',
+      );
 
   static String remove(BuildContext context) =>
-      get(context, en: 'Remove', ar: 'حذف');
+      get(
+        context,
+        en: 'Remove',
+        ar: 'حذف',
+      );
 
   // =========================================================
   // SETTINGS
   // =========================================================
 
   static String settings(BuildContext context) =>
-      get(context, en: 'Settings', ar: 'الإعدادات');
+      get(
+        context,
+        en: 'Settings',
+        ar: 'الإعدادات',
+      );
 
   static String profile(BuildContext context) =>
-      get(context, en: 'Profile', ar: 'الملف الشخصي');
+      get(
+        context,
+        en: 'Profile',
+        ar: 'الملف الشخصي',
+      );
 
   static String language(BuildContext context) =>
-      get(context, en: 'Language', ar: 'اللغة');
+      get(
+        context,
+        en: 'Language',
+        ar: 'اللغة',
+      );
 
   static String privacySecurity(BuildContext context) =>
       get(
@@ -190,16 +325,74 @@ class AppStrings {
       );
 
   static String notifications(BuildContext context) =>
-      get(context, en: 'Notifications', ar: 'الإشعارات');
+      get(
+        context,
+        en: 'Notifications',
+        ar: 'الإشعارات',
+      );
 
   static String help(BuildContext context) =>
-      get(context, en: 'Help', ar: 'المساعدة');
+      get(
+        context,
+        en: 'Help',
+        ar: 'المساعدة',
+      );
+
+  static String helpSupport(BuildContext context) =>
+      get(
+        context,
+        en: 'Help & Support',
+        ar: 'المساعدة والدعم',
+      );
+
+  static String paymentMethods(BuildContext context) =>
+      get(
+        context,
+        en: 'Payment Methods',
+        ar: 'طرق الدفع',
+      );
+
+  static String appearance(BuildContext context) =>
+      get(
+        context,
+        en: 'Appearance',
+        ar: 'المظهر',
+      );
 
   static String darkMode(BuildContext context) =>
-      get(context, en: 'Dark Mode', ar: 'الوضع الداكن');
+      get(
+        context,
+        en: 'Dark Mode',
+        ar: 'الوضع الداكن',
+      );
 
   static String lightMode(BuildContext context) =>
-      get(context, en: 'Light Mode', ar: 'الوضع الفاتح');
+      get(
+        context,
+        en: 'Light Mode',
+        ar: 'الوضع الفاتح',
+      );
+
+  static String systemMode(BuildContext context) =>
+      get(
+        context,
+        en: 'System Default',
+        ar: 'إعدادات النظام',
+      );
+
+  static String logout(BuildContext context) =>
+      get(
+        context,
+        en: 'Logout',
+        ar: 'تسجيل الخروج',
+      );
+
+  static String logoutQuestion(BuildContext context) =>
+      get(
+        context,
+        en: 'Are you sure you want to logout?',
+        ar: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+      );
 
   // =========================================================
   // SECURITY
@@ -243,8 +436,10 @@ class AppStrings {
   static String biometricUnavailable(BuildContext context) =>
       get(
         context,
-        en: 'Biometric authentication is not available on this device.',
-        ar: 'المصادقة بالبصمة غير متاحة على هذا الجهاز.',
+        en:
+            'Biometric authentication is not available on this device.',
+        ar:
+            'المصادقة بالبصمة غير متاحة على هذا الجهاز.',
       );
 
   static String twoFactorAvailable(BuildContext context) =>
@@ -275,34 +470,62 @@ class AppStrings {
   static String twoFactorDescription(BuildContext context) =>
       get(
         context,
-        en: 'Your account is protected with an additional verification step.',
-        ar: 'حسابك محمي بخطوة تحقق إضافية.',
+        en:
+            'Your account is protected with an additional verification step.',
+        ar:
+            'حسابك محمي بخطوة تحقق إضافية.',
       );
 
   static String twoFactorAddPhone(BuildContext context) =>
       get(
         context,
-        en: 'Add your phone number to protect your account with an additional verification step.',
-        ar: 'أضف رقم هاتفك لحماية حسابك بخطوة تحقق إضافية.',
+        en:
+            'Add your phone number to protect your account with an additional verification step.',
+        ar:
+            'أضف رقم هاتفك لحماية حسابك بخطوة تحقق إضافية.',
       );
 
   static String phoneNumber(BuildContext context) =>
-      get(context, en: 'Phone Number', ar: 'رقم الهاتف');
+      get(
+        context,
+        en: 'Phone Number',
+        ar: 'رقم الهاتف',
+      );
 
   static String verificationCode(BuildContext context) =>
-      get(context, en: 'Verification Code', ar: 'رمز التحقق');
+      get(
+        context,
+        en: 'Verification Code',
+        ar: 'رمز التحقق',
+      );
 
   static String enterOtp(BuildContext context) =>
-      get(context, en: 'Enter OTP', ar: 'أدخل رمز التحقق');
+      get(
+        context,
+        en: 'Enter OTP',
+        ar: 'أدخل رمز التحقق',
+      );
 
   static String sendCode(BuildContext context) =>
-      get(context, en: 'Send Code', ar: 'إرسال الرمز');
+      get(
+        context,
+        en: 'Send Code',
+        ar: 'إرسال الرمز',
+      );
 
   static String verifyCode(BuildContext context) =>
-      get(context, en: 'Verify Code', ar: 'تحقق من الرمز');
+      get(
+        context,
+        en: 'Verify Code',
+        ar: 'تحقق من الرمز',
+      );
 
   static String disable2FA(BuildContext context) =>
-      get(context, en: 'Disable 2FA', ar: 'إيقاف المصادقة الثنائية');
+      get(
+        context,
+        en: 'Disable 2FA',
+        ar: 'إيقاف المصادقة الثنائية',
+      );
 
   static String phoneRequired(BuildContext context) =>
       get(
@@ -314,8 +537,10 @@ class AppStrings {
   static String internationalPhone(BuildContext context) =>
       get(
         context,
-        en: 'Use international format, example: +201xxxxxxxxx',
-        ar: 'استخدم الصيغة الدولية، مثال: +201xxxxxxxxx',
+        en:
+            'Use international format, example: +201xxxxxxxxx',
+        ar:
+            'استخدم الصيغة الدولية، مثال: +201xxxxxxxxx',
       );
 
   static String codeSent(BuildContext context) =>
@@ -346,14 +571,18 @@ class AppStrings {
         ar: 'لا يوجد مستخدم مسجل الدخول',
       );
 
-  static String twoFactorEnabledMessage(BuildContext context) =>
+  static String twoFactorEnabledMessage(
+    BuildContext context,
+  ) =>
       get(
         context,
         en: 'Two-Factor Authentication enabled',
         ar: 'تم تفعيل المصادقة الثنائية',
       );
 
-  static String twoFactorDisabledMessage(BuildContext context) =>
+  static String twoFactorDisabledMessage(
+    BuildContext context,
+  ) =>
       get(
         context,
         en: 'Two-Factor Authentication disabled',
@@ -365,126 +594,210 @@ class AppStrings {
   // =========================================================
 
   static String english(BuildContext context) =>
-      get(context, en: 'English', ar: 'الإنجليزية');
+      get(
+        context,
+        en: 'English',
+        ar: 'الإنجليزية',
+      );
 
   static String arabic(BuildContext context) =>
-      get(context, en: 'Arabic', ar: 'العربية');
+      get(
+        context,
+        en: 'Arabic',
+        ar: 'العربية',
+      );
 
   // =========================================================
   // AUTH
   // =========================================================
 
   static String login(BuildContext context) =>
-      get(context, en: 'Login', ar: 'تسجيل الدخول');
+      get(
+        context,
+        en: 'Login',
+        ar: 'تسجيل الدخول',
+      );
 
   static String register(BuildContext context) =>
-      get(context, en: 'Register', ar: 'إنشاء حساب');
+      get(
+        context,
+        en: 'Register',
+        ar: 'إنشاء حساب',
+      );
 
   static String email(BuildContext context) =>
-      get(context, en: 'Email', ar: 'البريد الإلكتروني');
+      get(
+        context,
+        en: 'Email',
+        ar: 'البريد الإلكتروني',
+      );
 
   static String password(BuildContext context) =>
-      get(context, en: 'Password', ar: 'كلمة المرور');
+      get(
+        context,
+        en: 'Password',
+        ar: 'كلمة المرور',
+      );
 
   static String firstName(BuildContext context) =>
-      get(context, en: 'First Name', ar: 'الاسم الأول');
+      get(
+        context,
+        en: 'First Name',
+        ar: 'الاسم الأول',
+      );
 
   static String lastName(BuildContext context) =>
-      get(context, en: 'Last Name', ar: 'اسم العائلة');
+      get(
+        context,
+        en: 'Last Name',
+        ar: 'اسم العائلة',
+      );
 
   static String phone(BuildContext context) =>
-      get(context, en: 'Phone', ar: 'الهاتف');
+      get(
+        context,
+        en: 'Phone',
+        ar: 'الهاتف',
+      );
+// =========================================================
+// PROFILE
+// =========================================================
 
-  static String logout(BuildContext context) =>
-      get(context, en: 'Logout', ar: 'تسجيل الخروج');
+static String user(BuildContext context) =>
+    get(context, en: 'User', ar: 'مستخدم');
+
+static String addYourName(BuildContext context) =>
+    get(context, en: 'Add your name', ar: 'أضف اسمك');
+
+static String addYourEmail(BuildContext context) =>
+    get(context, en: 'Add your email', ar: 'أضف بريدك الإلكتروني');
+
+static String addYourPhone(BuildContext context) =>
+    get(context, en: 'Add your phone', ar: 'أضف رقم هاتفك');
+
+static String saveChanges(BuildContext context) =>
+    get(context, en: 'Save Changes', ar: 'حفظ التغييرات');
+
+static String changeName(BuildContext context) =>
+    get(context, en: 'Change Name', ar: 'تغيير الاسم');
+
+static String changeEmail(BuildContext context) =>
+    get(context, en: 'Change Email', ar: 'تغيير البريد الإلكتروني');
+
+static String changePhone(BuildContext context) =>
+    get(context, en: 'Change Phone', ar: 'تغيير الهاتف');
+
+static String nameCannotBeEmpty(BuildContext context) =>
+    get(context, en: 'Name cannot be empty', ar: 'لا يمكن أن يكون الاسم فارغًا');
+
+static String enterValidEmail(BuildContext context) =>
+    get(context, en: 'Enter a valid email', ar: 'أدخل بريدًا إلكترونيًا صحيحًا');
+
+static String phoneCannotBeEmpty(BuildContext context) =>
+    get(context, en: 'Phone cannot be empty', ar: 'لا يمكن أن يكون رقم الهاتف فارغًا');
+
+static String changePasswordTitle(BuildContext context) =>
+    get(context, en: 'Change Password', ar: 'تغيير كلمة المرور');
+
+static String currentPassword(BuildContext context) =>
+    get(context, en: 'Current Password', ar: 'كلمة المرور الحالية');
+
+static String newPassword(BuildContext context) =>
+    get(context, en: 'New Password', ar: 'كلمة المرور الجديدة');
+
+static String confirmPassword(BuildContext context) =>
+    get(context, en: 'Confirm Password', ar: 'تأكيد كلمة المرور');
+
+static String pleaseFillAllFields(BuildContext context) =>
+    get(context, en: 'Please fill all fields', ar: 'من فضلك املأ جميع الحقول');
+
+static String passwordMinLength(BuildContext context) =>
+    get(
+      context,
+      en: 'Password must be at least 6 characters',
+      ar: 'يجب أن تكون كلمة المرور 6 أحرف على الأقل',
+    );
+
+static String passwordsDoNotMatch(BuildContext context) =>
+    get(
+      context,
+      en: 'Passwords do not match',
+      ar: 'كلمتا المرور غير متطابقتين',
+    );
+
+static String newPasswordDifferent(BuildContext context) =>
+    get(
+      context,
+      en: 'New password must be different',
+      ar: 'يجب أن تكون كلمة المرور الجديدة مختلفة',
+    );
+
+static String passwordReadyToSave(BuildContext context) =>
+    get(
+      context,
+      en: 'Password ready to save',
+      ar: 'كلمة المرور جاهزة للحفظ',
+    );
+
+static String changesSavedSuccessfully(BuildContext context) =>
+    get(
+      context,
+      en: 'Changes saved successfully',
+      ar: 'تم حفظ التغييرات بنجاح',
+    );
+
+static String currentPasswordIncorrect(BuildContext context) =>
+    get(
+      context,
+      en: 'Current password is incorrect',
+      ar: 'كلمة المرور الحالية غير صحيحة',
+    );
+
+static String emailAlreadyInUse(BuildContext context) =>
+    get(
+      context,
+      en: 'This email is already in use',
+      ar: 'هذا البريد الإلكتروني مستخدم بالفعل',
+    );
+
+static String invalidEmailAddress(BuildContext context) =>
+    get(
+      context,
+      en: 'Invalid email address',
+      ar: 'عنوان البريد الإلكتروني غير صحيح',
+    );
+
+static String passwordTooWeak(BuildContext context) =>
+    get(
+      context,
+      en: 'Password is too weak',
+      ar: 'كلمة المرور ضعيفة جدًا',
+    );
+
+static String pleaseLoginAgain(BuildContext context) =>
+    get(
+      context,
+      en: 'Please login again and try again',
+      ar: 'من فضلك سجل الدخول مرة أخرى ثم حاول',
+    );
+
+static String checkInternetConnection(BuildContext context) =>
+    get(
+      context,
+      en: 'Check your internet connection',
+      ar: 'تحقق من اتصالك بالإنترنت',
+    );
+
+static String phoneHint(BuildContext context) =>
+    get(
+      context,
+      en: '+20xxxxxxxxxx',
+      ar: '+20xxxxxxxxxx',
+    );
+static String biometricFailed(BuildContext context) =>
+    get(
+      context,
+      en: 'Biometric authentication failed.',
+      ar: 'فشلت المصادقة بالبصمة.',
+    );
 }
-static String addToCart(BuildContext context) =>
-    get(
-      context,
-      en: 'Add to Cart',
-      ar: 'أضف إلى السلة',
-    );
-
-static String addedToCart(BuildContext context) =>
-    get(
-      context,
-      en: 'Added to Cart',
-      ar: 'تمت الإضافة إلى السلة',
-    );
-
-static String greeting(BuildContext context) =>
-    get(
-      context,
-      en: 'Welcome back,',
-      ar: 'مرحباً بعودتك،',
-    );
-
-static String searchProducts(BuildContext context) =>
-    get(
-      context,
-      en: 'Search products...',
-      ar: 'ابحث عن المنتجات...',
-    );
-
-static String all(BuildContext context) =>
-    get(
-      context,
-      en: 'All',
-      ar: 'الكل',
-    );
-
-static String laptops(BuildContext context) =>
-    get(
-      context,
-      en: 'Laptops',
-      ar: 'لابتوبات',
-    );
-
-static String smartphones(BuildContext context) =>
-    get(
-      context,
-      en: 'Smartphones',
-      ar: 'هواتف ذكية',
-    );
-
-static String tablets(BuildContext context) =>
-    get(
-      context,
-      en: 'Tablets',
-      ar: 'أجهزة لوحية',
-    );
-
-static String accessories(BuildContext context) =>
-    get(
-      context,
-      en: 'Accessories',
-      ar: 'إكسسوارات',
-    );
-
-static String gaming(BuildContext context) =>
-    get(
-      context,
-      en: 'Gaming',
-      ar: 'ألعاب',
-    );
-
-static String wearables(BuildContext context) =>
-    get(
-      context,
-      en: 'Wearables',
-      ar: 'أجهزة قابلة للارتداء',
-    );
-
-static String somethingWentWrong(BuildContext context) =>
-    get(
-      context,
-      en: 'Something went wrong',
-      ar: 'حدث خطأ ما',
-    );
-
-String noProducts(BuildContext context) =>
-    get(
-      context,
-      en: 'No products found',
-      ar: 'لم يتم العثور على منتجات',
-    );

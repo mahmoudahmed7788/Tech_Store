@@ -1,38 +1,40 @@
-
 import 'package:flutter/material.dart';
+import 'package:tech_store/core/constsnts/AppStrings.dart';
 
 class PaymentMethodsPage extends StatefulWidget {
   const PaymentMethodsPage({super.key});
 
   @override
-  State<PaymentMethodsPage> createState() =>
-      _PaymentMethodsPageState();
+  State<PaymentMethodsPage> createState() => _PaymentMethodsPageState();
 }
 
-class _PaymentMethodsPageState
-    extends State<PaymentMethodsPage> {
-  static const Color primaryBlue =
-      Color(0xFF4C5DFF);
-
-  static const Color cardColor =
-      Color(0xFF1A1A1A);
+class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
+  static const Color primaryBlue = Color(0xFF4C5DFF);
 
   String selectedMethod = 'Cash on Delivery';
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ?? Colors.grey;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
 
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
 
-        title: const Text(
-          'Payment Methods',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        foregroundColor: textColor,
+
+        elevation: 0,
+
+        title: Text(
+          AppStrings.get(context, en: 'Payment Methods', ar: 'طرق الدفع'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
 
@@ -41,14 +43,14 @@ class _PaymentMethodsPageState
           padding: const EdgeInsets.all(20),
 
           children: [
-            // =================================================
-            // HEADER
-            // =================================================
-
-            const Text(
-              'Choose Payment Method',
+            Text(
+              AppStrings.get(
+                context,
+                en: 'Choose Payment Method',
+                ar: 'اختر طريقة الدفع',
+              ),
               style: TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -56,86 +58,92 @@ class _PaymentMethodsPageState
 
             const SizedBox(height: 8),
 
-            const Text(
-              'Select your preferred payment method.',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
+            Text(
+              AppStrings.get(
+                context,
+                en: 'Select your preferred payment method.',
+                ar: 'اختر طريقة الدفع المفضلة لديك.',
               ),
+              style: TextStyle(color: secondaryColor, fontSize: 14),
             ),
 
             const SizedBox(height: 25),
 
-            // =================================================
-            // CASH ON DELIVERY
-            // =================================================
-
             _paymentTile(
+              context: context,
               icon: Icons.money_outlined,
-              title: 'Cash on Delivery',
-              subtitle: 'Pay when your order arrives',
+              title: AppStrings.get(
+                context,
+                en: 'Cash on Delivery',
+                ar: 'الدفع عند الاستلام',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Pay when your order arrives',
+                ar: 'ادفع عند وصول طلبك',
+              ),
               value: 'Cash on Delivery',
             ),
 
-            // =================================================
-            // VISA
-            // =================================================
-
             _paymentTile(
+              context: context,
               icon: Icons.credit_card_outlined,
-              title: 'Credit / Debit Card',
-              subtitle: 'Visa, Mastercard and more',
+              title: AppStrings.get(
+                context,
+                en: 'Credit / Debit Card',
+                ar: 'بطاقة ائتمان / خصم',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Visa, Mastercard and more',
+                ar: 'Visa و Mastercard وغيرها',
+              ),
               value: 'Credit / Debit Card',
             ),
 
-            // =================================================
-            // VODAFONE CASH
-            // =================================================
-
             _paymentTile(
+              context: context,
               icon: Icons.phone_android_outlined,
-              title: 'Mobile Wallet',
-              subtitle: 'Vodafone Cash and other wallets',
+              title: AppStrings.get(
+                context,
+                en: 'Mobile Wallet',
+                ar: 'المحفظة الإلكترونية',
+              ),
+              subtitle: AppStrings.get(
+                context,
+                en: 'Vodafone Cash and other wallets',
+                ar: 'فودافون كاش والمحافظ الأخرى',
+              ),
               value: 'Mobile Wallet',
             ),
 
             const SizedBox(height: 25),
 
-            // =================================================
-            // ADD PAYMENT METHOD
-            // =================================================
-
             SizedBox(
               width: double.infinity,
               height: 55,
-
               child: OutlinedButton.icon(
-                onPressed: () {
-                  _showAddPaymentMethod();
-                },
+                onPressed: _showAddPaymentMethod,
 
-                icon: const Icon(
-                  Icons.add,
-                  color: primaryBlue,
-                ),
+                icon: const Icon(Icons.add, color: primaryBlue),
 
-                label: const Text(
-                  'Add Payment Method',
+                label: Text(
+                  AppStrings.get(
+                    context,
+                    en: 'Add Payment Method',
+                    ar: 'إضافة طريقة دفع',
+                  ),
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
 
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                    color: Color(0xFF333333),
-                  ),
-
+                  side: BorderSide(color: theme.dividerColor),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
               ),
@@ -143,38 +151,31 @@ class _PaymentMethodsPageState
 
             const SizedBox(height: 30),
 
-            // =================================================
-            // SECURITY
-            // =================================================
-
             Container(
               padding: const EdgeInsets.all(16),
 
               decoration: BoxDecoration(
-                color: const Color(0xFF151515),
-                borderRadius:
-                    BorderRadius.circular(14),
+                color: theme.cardColor,
+                borderRadius: BorderRadius.circular(16),
               ),
 
-              child: const Row(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-                  Icon(
-                    Icons.lock_outline,
-                    color: primaryBlue,
-                    size: 22,
-                  ),
+                  const Icon(Icons.lock_outline, color: primaryBlue, size: 22),
 
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
 
                   Expanded(
                     child: Text(
-                      'Your payment information is kept secure. '
-                      'Payment details are only used when you complete an order.',
+                      AppStrings.get(
+                        context,
+                        en: 'Your payment information is kept secure. Payment details are only used when you complete an order.',
+                        ar: 'بيانات الدفع الخاصة بك محفوظة بأمان، ولا يتم استخدامها إلا عند إتمام الطلب.',
+                      ),
                       style: TextStyle(
-                        color: Colors.grey,
+                        color: secondaryColor,
                         fontSize: 12,
                         height: 1.5,
                       ),
@@ -189,34 +190,30 @@ class _PaymentMethodsPageState
     );
   }
 
-  // =========================================================
-  // PAYMENT TILE
-  // =========================================================
-
   Widget _paymentTile({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
     required String value,
   }) {
-    final bool selected =
-        selectedMethod == value;
+    final theme = Theme.of(context);
+
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ?? Colors.grey;
+
+    final selected = selectedMethod == value;
 
     return Container(
-      margin: const EdgeInsets.only(
-        bottom: 12,
-      ),
+      margin: const EdgeInsets.only(bottom: 12),
 
       decoration: BoxDecoration(
-        color: cardColor,
-
-        borderRadius:
-            BorderRadius.circular(16),
-
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: selected
-              ? primaryBlue
-              : Colors.transparent,
+          color: selected ? primaryBlue : Colors.transparent,
           width: 1.2,
         ),
       ),
@@ -224,11 +221,9 @@ class _PaymentMethodsPageState
       child: RadioListTile<String>(
         value: value,
 
-        groupValue:
-            selectedMethod,
+        groupValue: selectedMethod,
 
-        activeColor:
-            primaryBlue,
+        activeColor: primaryBlue,
 
         onChanged: (newValue) {
           if (newValue == null) {
@@ -236,17 +231,21 @@ class _PaymentMethodsPageState
           }
 
           setState(() {
-            selectedMethod =
-                newValue;
+            selectedMethod = newValue;
           });
 
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                '$newValue selected',
+                AppStrings.get(
+                  context,
+                  en: '$title selected',
+                  ar: 'تم اختيار $title',
+                ),
               ),
+              duration: const Duration(milliseconds: 900),
             ),
           );
         },
@@ -254,118 +253,108 @@ class _PaymentMethodsPageState
         secondary: Container(
           width: 46,
           height: 46,
-
           decoration: BoxDecoration(
-            color:
-                primaryBlue.withOpacity(
-              0.15,
-            ),
-
-            borderRadius:
-                BorderRadius.circular(12),
+            color: primaryBlue.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(12),
           ),
-
-          child: Icon(
-            icon,
-            color: primaryBlue,
-          ),
+          child: Icon(icon, color: primaryBlue),
         ),
 
         title: Text(
           title,
-
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: textColor,
             fontSize: 15,
-            fontWeight:
-                FontWeight.w600,
+            fontWeight: FontWeight.w600,
           ),
         ),
 
         subtitle: Text(
           subtitle,
-
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 12,
-          ),
+          style: TextStyle(color: secondaryColor, fontSize: 12),
         ),
       ),
     );
   }
 
-  // =========================================================
-  // ADD PAYMENT METHOD
-  // =========================================================
-
   void _showAddPaymentMethod() {
+    final theme = Theme.of(context);
+
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
+
     showModalBottomSheet(
       context: context,
 
-      backgroundColor: cardColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
 
-      shape:
-          const RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.vertical(
-          top: Radius.circular(24),
-        ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
 
-      builder: (context) {
+      builder: (sheetContext) {
         return SafeArea(
           child: Padding(
-            padding:
-                const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(24),
 
             child: Column(
-              mainAxisSize:
-                  MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min,
 
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                const Text(
-                  'Add Payment Method',
+                Text(
+                  AppStrings.get(
+                    context,
+                    en: 'Add Payment Method',
+                    ar: 'إضافة طريقة دفع',
+                  ),
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 20,
-                    fontWeight:
-                        FontWeight.bold,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
 
                 const SizedBox(height: 20),
 
                 _addOption(
-                  icon:
-                      Icons.credit_card,
-                  title:
-                      'Credit / Debit Card',
+                  context: sheetContext,
+                  icon: Icons.credit_card,
+                  title: AppStrings.get(
+                    context,
+                    en: 'Credit / Debit Card',
+                    ar: 'بطاقة ائتمان / خصم',
+                  ),
                   onTap: () {
-                    Navigator.pop(
-                      context,
-                    );
+                    Navigator.pop(sheetContext);
 
                     _showMessage(
-                      'Card payment will be added later.',
+                      AppStrings.get(
+                        context,
+                        en: 'Card payment will be added later.',
+                        ar: 'الدفع بالبطاقة سيتم إضافته لاحقاً.',
+                      ),
                     );
                   },
                 ),
 
                 _addOption(
-                  icon:
-                      Icons.account_balance_wallet_outlined,
-                  title:
-                      'Mobile Wallet',
+                  context: sheetContext,
+                  icon: Icons.account_balance_wallet_outlined,
+                  title: AppStrings.get(
+                    context,
+                    en: 'Mobile Wallet',
+                    ar: 'المحفظة الإلكترونية',
+                  ),
                   onTap: () {
-                    Navigator.pop(
-                      context,
-                    );
+                    Navigator.pop(sheetContext);
 
                     _showMessage(
-                      'Mobile wallet will be added later.',
+                      AppStrings.get(
+                        context,
+                        en: 'Mobile wallet will be added later.',
+                        ar: 'المحفظة الإلكترونية سيتم إضافتها لاحقاً.',
+                      ),
                     );
                   },
                 ),
@@ -377,47 +366,32 @@ class _PaymentMethodsPageState
     );
   }
 
-  // =========================================================
-  // ADD OPTION
-  // =========================================================
-
   Widget _addOption({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
+
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
+
     return Container(
-      margin:
-          const EdgeInsets.only(
-        bottom: 10,
-      ),
+      margin: const EdgeInsets.only(bottom: 10),
 
       decoration: BoxDecoration(
-        color:
-            const Color(0xFF252525),
-
-        borderRadius:
-            BorderRadius.circular(14),
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(14),
       ),
 
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: primaryBlue,
-        ),
+        leading: Icon(icon, color: primaryBlue),
 
-        title: Text(
-          title,
-          style:
-              const TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        title: Text(title, style: TextStyle(color: textColor)),
 
-        trailing:
-            const Icon(
+        trailing: Icon(
           Icons.arrow_forward_ios,
-          color: Colors.grey,
+          color: theme.iconTheme.color?.withOpacity(0.5),
           size: 15,
         ),
 
@@ -426,19 +400,11 @@ class _PaymentMethodsPageState
     );
   }
 
-  // =========================================================
-  // MESSAGE
-  // =========================================================
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-  void _showMessage(
-    String message,
-  ) {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 }

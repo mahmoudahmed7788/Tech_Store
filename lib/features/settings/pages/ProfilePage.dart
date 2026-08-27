@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:tech_store/core/constsnts/AppStrings.dart';
+
 class ProfilePage extends StatefulWidget {
   final String userName;
 
@@ -14,9 +16,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static const Color primaryBlue = Color(0xFF4C5DFF);
 
-  // ================= CONTROLLERS =================
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final TextEditingController nameController =
       TextEditingController();
@@ -26,8 +28,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final TextEditingController phoneController =
       TextEditingController();
-
-  // ================= VARIABLES =================
 
   String? newPassword;
 
@@ -44,11 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ? user!.displayName!
             : widget.userName;
 
-    emailController.text =
-        user?.email ?? '';
+    emailController.text = user?.email ?? '';
 
-    phoneController.text =
-        user?.phoneNumber ?? '';
+    phoneController.text = user?.phoneNumber ?? '';
   }
 
   @override
@@ -56,22 +54,35 @@ class _ProfilePageState extends State<ProfilePage> {
     nameController.dispose();
     emailController.dispose();
     phoneController.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ??
+            Colors.white;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color
+                ?.withOpacity(0.65) ??
+            Colors.grey;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor:
+          theme.scaffoldBackgroundColor,
 
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor:
+            theme.scaffoldBackgroundColor,
+        foregroundColor: textColor,
+        elevation: 0,
 
-        title: const Text(
-          'Profile',
-          style: TextStyle(
+        title: Text(
+          AppStrings.profile(context),
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -90,9 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             const CircleAvatar(
               radius: 55,
-
-              backgroundColor:
-                  Color(0xFF4C5DFF),
+              backgroundColor: primaryBlue,
 
               child: Icon(
                 Icons.person,
@@ -104,16 +113,16 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 20),
 
             // =================================================
-            // NAME
+            // USER NAME
             // =================================================
 
             Text(
               nameController.text.isEmpty
-                  ? 'User'
+                  ? AppStrings.user(context)
                   : nameController.text,
 
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: textColor,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -127,13 +136,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
             _profileTile(
               icon: Icons.person_outline,
-              title: 'Name',
-
+              title: AppStrings.firstName(context),
               value:
                   nameController.text.isEmpty
-                      ? 'Add your name'
+                      ? AppStrings.addYourName(context)
                       : nameController.text,
-
               onTap: _changeName,
             ),
 
@@ -143,13 +150,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
             _profileTile(
               icon: Icons.email_outlined,
-              title: 'Email',
-
+              title: AppStrings.email(context),
               value:
                   emailController.text.isEmpty
-                      ? 'Add your email'
+                      ? AppStrings.addYourEmail(context)
                       : emailController.text,
-
               onTap: _changeEmail,
             ),
 
@@ -159,13 +164,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
             _profileTile(
               icon: Icons.phone_outlined,
-              title: 'Phone',
-
+              title: AppStrings.phone(context),
               value:
                   phoneController.text.isEmpty
-                      ? 'Add your phone'
+                      ? AppStrings.addYourPhone(context)
                       : phoneController.text,
-
               onTap: _changePhone,
             ),
 
@@ -175,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             _profileTile(
               icon: Icons.lock_outline,
-              title: 'Password',
+              title: AppStrings.password(context),
               value: '••••••••',
               onTap: _changePassword,
             ),
@@ -183,7 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 30),
 
             // =================================================
-            // SAVE CHANGES
+            // SAVE
             // =================================================
 
             SizedBox(
@@ -199,7 +202,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 style:
                     ElevatedButton.styleFrom(
                   backgroundColor:
-                      const Color(0xFF4C5DFF),
+                      primaryBlue,
+
+                  foregroundColor:
+                      Colors.white,
+
+                  elevation: 0,
 
                   shape:
                       RoundedRectangleBorder(
@@ -220,11 +228,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text(
-                            'Save Changes',
+                        : Text(
+                            AppStrings
+                                .saveChanges(
+                              context,
+                            ),
 
-                            style: TextStyle(
-                              color: Colors.white,
+                            style:
+                                const TextStyle(
                               fontSize: 17,
                               fontWeight:
                                   FontWeight.bold,
@@ -240,9 +251,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ============================================================
+  // =============================================================
   // PROFILE TILE
-  // ============================================================
+  // =============================================================
 
   Widget _profileTile({
     required IconData icon,
@@ -250,6 +261,8 @@ class _ProfilePageState extends State<ProfilePage> {
     required String value,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
+
     return Container(
       margin:
           const EdgeInsets.only(
@@ -259,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
       decoration:
           BoxDecoration(
         color:
-            const Color(0xFF1A1A1A),
+            theme.cardColor,
 
         borderRadius:
             BorderRadius.circular(14),
@@ -268,44 +281,52 @@ class _ProfilePageState extends State<ProfilePage> {
       child: ListTile(
         onTap: onTap,
 
-        leading: Icon(
+        leading:
+            Icon(
           icon,
-          color: Colors.white,
+          color:
+              theme.iconTheme.color,
         ),
 
-        title: Text(
+        title:
+            Text(
           title,
 
           style:
-              const TextStyle(
-            color: Colors.grey,
+              TextStyle(
+            color:
+                theme.textTheme.bodySmall?.color,
             fontSize: 12,
           ),
         ),
 
-        subtitle: Text(
+        subtitle:
+            Text(
           value,
 
           style:
-              const TextStyle(
-            color: Colors.white,
+              TextStyle(
+            color:
+                theme.textTheme.bodyLarge?.color,
             fontSize: 15,
           ),
         ),
 
         trailing:
-            const Icon(
+            Icon(
           Icons.arrow_forward_ios,
-          color: Colors.grey,
+          color:
+              theme.iconTheme.color
+                  ?.withOpacity(0.5),
           size: 17,
         ),
       ),
     );
   }
 
-  // ============================================================
+  // =============================================================
   // CHANGE NAME
-  // ============================================================
+  // =============================================================
 
   void _changeName() {
     final controller =
@@ -316,70 +337,32 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
 
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
-          backgroundColor:
-              const Color(0xFF1A1A1A),
-
-          title: const Text(
-            'Change Name',
-
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight:
-                  FontWeight.bold,
+          title:
+              Text(
+            AppStrings.changeName(
+              context,
             ),
           ),
 
-          content: TextField(
-            controller: controller,
-            autofocus: true,
+          content:
+              TextField(
+            controller:
+                controller,
 
-            style:
-                const TextStyle(
-              color: Colors.white,
-            ),
+            autofocus: true,
 
             decoration:
                 InputDecoration(
-              labelText: 'Name',
-
-              labelStyle:
-                  const TextStyle(
-                color: Colors.grey,
+              labelText:
+                  AppStrings.firstName(
+                context,
               ),
 
               prefixIcon:
                   const Icon(
                 Icons.person_outline,
-                color: Colors.grey,
-              ),
-
-              enabledBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(
-                  12,
-                ),
-
-                borderSide:
-                    const BorderSide(
-                  color: Colors.grey,
-                ),
-              ),
-
-              focusedBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(
-                  12,
-                ),
-
-                borderSide:
-                    const BorderSide(
-                  color:
-                      Color(0xFF4C5DFF),
-                ),
               ),
             ),
           ),
@@ -388,15 +371,14 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(
-                  context,
+                  dialogContext,
                 );
               },
 
-              child: const Text(
-                'Cancel',
-
-                style: TextStyle(
-                  color: Colors.grey,
+              child:
+                  Text(
+                AppStrings.cancel(
+                  context,
                 ),
               ),
             ),
@@ -408,7 +390,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 if (name.isEmpty) {
                   _showMessage(
-                    'Name cannot be empty',
+                    AppStrings.nameCannotBeEmpty(
+                      context,
+                    ),
                   );
                   return;
                 }
@@ -419,23 +403,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 });
 
                 Navigator.pop(
-                  context,
+                  dialogContext,
                 );
               },
 
               style:
                   ElevatedButton.styleFrom(
                 backgroundColor:
-                    const Color(
-                  0xFF4C5DFF,
-                ),
+                    primaryBlue,
+                foregroundColor:
+                    Colors.white,
               ),
 
-              child: const Text(
-                'Done',
-
-                style: TextStyle(
-                  color: Colors.white,
+              child:
+                  Text(
+                AppStrings.done(
+                  context,
                 ),
               ),
             ),
@@ -445,9 +428,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ============================================================
+  // =============================================================
   // CHANGE EMAIL
-  // ============================================================
+  // =============================================================
 
   void _changeEmail() {
     final controller =
@@ -458,73 +441,35 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
 
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
-          backgroundColor:
-              const Color(0xFF1A1A1A),
-
-          title: const Text(
-            'Change Email',
-
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight:
-                  FontWeight.bold,
+          title:
+              Text(
+            AppStrings.changeEmail(
+              context,
             ),
           ),
 
-          content: TextField(
-            controller: controller,
+          content:
+              TextField(
+            controller:
+                controller,
+
             autofocus: true,
 
             keyboardType:
                 TextInputType.emailAddress,
 
-            style:
-                const TextStyle(
-              color: Colors.white,
-            ),
-
             decoration:
                 InputDecoration(
-              labelText: 'Email',
-
-              labelStyle:
-                  const TextStyle(
-                color: Colors.grey,
+              labelText:
+                  AppStrings.email(
+                context,
               ),
 
               prefixIcon:
                   const Icon(
                 Icons.email_outlined,
-                color: Colors.grey,
-              ),
-
-              enabledBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(
-                  12,
-                ),
-
-                borderSide:
-                    const BorderSide(
-                  color: Colors.grey,
-                ),
-              ),
-
-              focusedBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(
-                  12,
-                ),
-
-                borderSide:
-                    const BorderSide(
-                  color:
-                      Color(0xFF4C5DFF),
-                ),
               ),
             ),
           ),
@@ -533,15 +478,14 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(
-                  context,
+                  dialogContext,
                 );
               },
 
-              child: const Text(
-                'Cancel',
-
-                style: TextStyle(
-                  color: Colors.grey,
+              child:
+                  Text(
+                AppStrings.cancel(
+                  context,
                 ),
               ),
             ),
@@ -554,7 +498,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (email.isEmpty ||
                     !email.contains('@')) {
                   _showMessage(
-                    'Enter a valid email',
+                    AppStrings.enterValidEmail(
+                      context,
+                    ),
                   );
                   return;
                 }
@@ -565,23 +511,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 });
 
                 Navigator.pop(
-                  context,
+                  dialogContext,
                 );
               },
 
               style:
                   ElevatedButton.styleFrom(
                 backgroundColor:
-                    const Color(
-                  0xFF4C5DFF,
-                ),
+                    primaryBlue,
+                foregroundColor:
+                    Colors.white,
               ),
 
-              child: const Text(
-                'Done',
-
-                style: TextStyle(
-                  color: Colors.white,
+              child:
+                  Text(
+                AppStrings.done(
+                  context,
                 ),
               ),
             ),
@@ -591,9 +536,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ============================================================
+  // =============================================================
   // CHANGE PHONE
-  // ============================================================
+  // =============================================================
 
   void _changePhone() {
     final controller =
@@ -604,82 +549,40 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
 
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
-          backgroundColor:
-              const Color(0xFF1A1A1A),
-
-          title: const Text(
-            'Change Phone',
-
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight:
-                  FontWeight.bold,
+          title:
+              Text(
+            AppStrings.changePhone(
+              context,
             ),
           ),
 
-          content: TextField(
-            controller: controller,
+          content:
+              TextField(
+            controller:
+                controller,
+
             autofocus: true,
 
             keyboardType:
                 TextInputType.phone,
 
-            style:
-                const TextStyle(
-              color: Colors.white,
-            ),
-
             decoration:
                 InputDecoration(
               labelText:
-                  'Phone Number',
+                  AppStrings.phoneNumber(
+                context,
+              ),
 
-              labelStyle:
-                  const TextStyle(
-                color: Colors.grey,
+              hintText:
+                  AppStrings.phoneHint(
+                context,
               ),
 
               prefixIcon:
                   const Icon(
                 Icons.phone_outlined,
-                color: Colors.grey,
-              ),
-
-              hintText:
-                  '+20xxxxxxxxxx',
-
-              hintStyle:
-                  const TextStyle(
-                color: Colors.grey,
-              ),
-
-              enabledBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(
-                  12,
-                ),
-
-                borderSide:
-                    const BorderSide(
-                  color: Colors.grey,
-                ),
-              ),
-
-              focusedBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(
-                  12,
-                ),
-
-                borderSide:
-                    const BorderSide(
-                  color:
-                      Color(0xFF4C5DFF),
-                ),
               ),
             ),
           ),
@@ -688,15 +591,14 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(
-                  context,
+                  dialogContext,
                 );
               },
 
-              child: const Text(
-                'Cancel',
-
-                style: TextStyle(
-                  color: Colors.grey,
+              child:
+                  Text(
+                AppStrings.cancel(
+                  context,
                 ),
               ),
             ),
@@ -708,7 +610,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 if (phone.isEmpty) {
                   _showMessage(
-                    'Phone cannot be empty',
+                    AppStrings.phoneCannotBeEmpty(
+                      context,
+                    ),
                   );
                   return;
                 }
@@ -719,23 +623,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 });
 
                 Navigator.pop(
-                  context,
+                  dialogContext,
                 );
               },
 
               style:
                   ElevatedButton.styleFrom(
                 backgroundColor:
-                    const Color(
-                  0xFF4C5DFF,
-                ),
+                    primaryBlue,
+                foregroundColor:
+                    Colors.white,
               ),
 
-              child: const Text(
-                'Done',
-
-                style: TextStyle(
-                  color: Colors.white,
+              child:
+                  Text(
+                AppStrings.done(
+                  context,
                 ),
               ),
             ),
@@ -745,9 +648,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ============================================================
+  // =============================================================
   // CHANGE PASSWORD
-  // ============================================================
+  // =============================================================
 
   void _changePassword() {
     final currentController =
@@ -771,22 +674,14 @@ class _ProfilePageState extends State<ProfilePage> {
         return StatefulBuilder(
           builder:
               (
-                context,
-                setDialogState,
-              ) {
+            context,
+            setDialogState,
+          ) {
             return AlertDialog(
-              backgroundColor:
-                  const Color(
-                0xFF1A1A1A,
-              ),
-
-              title: const Text(
-                'Change Password',
-
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight:
-                      FontWeight.bold,
+              title:
+                  Text(
+                AppStrings.changePasswordTitle(
+                  context,
                 ),
               ),
 
@@ -802,7 +697,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           currentController,
 
                       label:
-                          'Current Password',
+                          AppStrings.currentPassword(
+                        context,
+                      ),
 
                       obscure:
                           obscureCurrent,
@@ -824,7 +721,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           newController,
 
                       label:
-                          'New Password',
+                          AppStrings.newPassword(
+                        context,
+                      ),
 
                       obscure:
                           obscureNew,
@@ -846,7 +745,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           confirmController,
 
                       label:
-                          'Confirm Password',
+                          AppStrings.confirmPassword(
+                        context,
+                      ),
 
                       obscure:
                           obscureConfirm,
@@ -870,11 +771,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
                   },
 
-                  child: const Text(
-                    'Cancel',
-
-                    style: TextStyle(
-                      color: Colors.grey,
+                  child:
+                      Text(
+                    AppStrings.cancel(
+                      context,
                     ),
                   ),
                 ),
@@ -886,7 +786,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             .text
                             .trim();
 
-                    final newPassword =
+                    final password =
                         newController
                             .text
                             .trim();
@@ -897,34 +797,43 @@ class _ProfilePageState extends State<ProfilePage> {
                             .trim();
 
                     if (current.isEmpty ||
-                        newPassword.isEmpty ||
+                        password.isEmpty ||
                         confirm.isEmpty) {
                       _showMessage(
-                        'Please fill all fields',
+                        AppStrings
+                            .pleaseFillAllFields(
+                          context,
+                        ),
                       );
                       return;
                     }
 
-                    if (newPassword.length <
-                        6) {
+                    if (password.length < 6) {
                       _showMessage(
-                        'Password must be at least 6 characters',
+                        AppStrings
+                            .passwordMinLength(
+                          context,
+                        ),
                       );
                       return;
                     }
 
-                    if (newPassword !=
-                        confirm) {
+                    if (password != confirm) {
                       _showMessage(
-                        'Passwords do not match',
+                        AppStrings
+                            .passwordsDoNotMatch(
+                          context,
+                        ),
                       );
                       return;
                     }
 
-                    if (newPassword ==
-                        current) {
+                    if (password == current) {
                       _showMessage(
-                        'New password must be different',
+                        AppStrings
+                            .newPasswordDifferent(
+                          context,
+                        ),
                       );
                       return;
                     }
@@ -934,10 +843,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           _auth.currentUser;
 
                       if (user == null ||
-                          user.email ==
-                              null) {
+                          user.email == null) {
                         _showMessage(
-                          'No logged in user',
+                          AppStrings
+                              .noLoggedUser(
+                            context,
+                          ),
                         );
                         return;
                       }
@@ -957,8 +868,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
 
                       setState(() {
-                        this.newPassword =
-                            newPassword;
+                        newPassword =
+                            password;
                       });
 
                       Navigator.pop(
@@ -966,29 +877,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
 
                       _showMessage(
-                        'Password ready to save',
+                        AppStrings
+                            .passwordReadyToSave(
+                          context,
+                        ),
                       );
-                    } on FirebaseAuthException catch (
-                        e) {
-                      _showFirebaseError(
-                        e,
-                      );
+                    } on FirebaseAuthException catch (e) {
+                      _showFirebaseError(e);
                     }
                   },
 
                   style:
                       ElevatedButton.styleFrom(
                     backgroundColor:
-                        const Color(
-                      0xFF4C5DFF,
-                    ),
+                        primaryBlue,
+                    foregroundColor:
+                        Colors.white,
                   ),
 
-                  child: const Text(
-                    'Done',
-
-                    style: TextStyle(
-                      color: Colors.white,
+                  child:
+                      Text(
+                    AppStrings.done(
+                      context,
                     ),
                   ),
                 ),
@@ -1000,44 +910,28 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ============================================================
+  // =============================================================
   // PASSWORD FIELD
-  // ============================================================
+  // =============================================================
 
   Widget _passwordField({
-    required TextEditingController
-        controller,
-
+    required TextEditingController controller,
     required String label,
-
     required bool obscure,
-
-    required VoidCallback
-        onEyePressed,
+    required VoidCallback onEyePressed,
   }) {
     return TextField(
       controller: controller,
 
       obscureText: obscure,
 
-      style:
-          const TextStyle(
-        color: Colors.white,
-      ),
-
       decoration:
           InputDecoration(
         labelText: label,
 
-        labelStyle:
-            const TextStyle(
-          color: Colors.grey,
-        ),
-
         prefixIcon:
             const Icon(
           Icons.lock_outline,
-          color: Colors.grey,
         ),
 
         suffixIcon:
@@ -1045,49 +939,20 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed:
               onEyePressed,
 
-          icon: Icon(
+          icon:
+              Icon(
             obscure
                 ? Icons.visibility
                 : Icons.visibility_off,
-
-            color:
-                Colors.grey,
-          ),
-        ),
-
-        enabledBorder:
-            OutlineInputBorder(
-          borderRadius:
-              BorderRadius.circular(
-            12,
-          ),
-
-          borderSide:
-              const BorderSide(
-            color: Colors.grey,
-          ),
-        ),
-
-        focusedBorder:
-            OutlineInputBorder(
-          borderRadius:
-              BorderRadius.circular(
-            12,
-          ),
-
-          borderSide:
-              const BorderSide(
-            color:
-                Color(0xFF4C5DFF),
           ),
         ),
       ),
     );
   }
 
-  // ============================================================
-  // SAVE CHANGES
-  // ============================================================
+  // =============================================================
+  // SAVE
+  // =============================================================
 
   Future<void> _saveChanges() async {
     final user =
@@ -1095,7 +960,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (user == null) {
       _showMessage(
-        'No logged in user',
+        AppStrings.noLoggedUser(
+          context,
+        ),
       );
       return;
     }
@@ -1105,21 +972,18 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     try {
-      // ================= NAME =================
-
+      // NAME
       final newName =
           nameController.text.trim();
 
       if (newName.isNotEmpty &&
-          newName !=
-              user.displayName) {
+          newName != user.displayName) {
         await user.updateDisplayName(
           newName,
         );
       }
 
-      // ================= PASSWORD =================
-
+      // PASSWORD
       if (newPassword != null &&
           newPassword!.isNotEmpty) {
         await user.updatePassword(
@@ -1127,20 +991,16 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       }
 
-      // ================= EMAIL =================
-
+      // EMAIL
       final newEmail =
           emailController.text.trim();
 
       if (newEmail.isNotEmpty &&
           newEmail != user.email) {
-        await user
-            .verifyBeforeUpdateEmail(
+        await user.verifyBeforeUpdateEmail(
           newEmail,
         );
       }
-
-      // ================= RELOAD =================
 
       await user.reload();
 
@@ -1152,10 +1012,12 @@ class _ProfilePageState extends State<ProfilePage> {
       });
 
       _showMessage(
-        'Changes saved successfully',
+        AppStrings
+            .changesSavedSuccessfully(
+          context,
+        ),
       );
-    } on FirebaseAuthException catch (
-        e) {
+    } on FirebaseAuthException catch (e) {
       if (!mounted) return;
 
       setState(() {
@@ -1171,14 +1033,16 @@ class _ProfilePageState extends State<ProfilePage> {
       });
 
       _showMessage(
-        'Something went wrong',
+        AppStrings.error(
+          context,
+        ),
       );
     }
   }
 
-  // ============================================================
+  // =============================================================
   // FIREBASE ERROR
-  // ============================================================
+  // =============================================================
 
   void _showFirebaseError(
     FirebaseAuthException e,
@@ -1189,68 +1053,80 @@ class _ProfilePageState extends State<ProfilePage> {
       case 'wrong-password':
       case 'invalid-credential':
         message =
-            'Current password is incorrect';
+            AppStrings
+                .currentPasswordIncorrect(
+          context,
+        );
         break;
 
       case 'email-already-in-use':
         message =
-            'This email is already in use';
+            AppStrings.emailAlreadyInUse(
+          context,
+        );
         break;
 
       case 'invalid-email':
         message =
-            'Invalid email address';
+            AppStrings.invalidEmailAddress(
+          context,
+        );
         break;
 
       case 'weak-password':
         message =
-            'Password is too weak';
+            AppStrings.passwordTooWeak(
+          context,
+        );
         break;
 
       case 'requires-recent-login':
         message =
-            'Please login again and try again';
+            AppStrings.pleaseLoginAgain(
+          context,
+        );
         break;
 
       case 'network-request-failed':
         message =
-            'Check your internet connection';
+            AppStrings.checkInternetConnection(
+          context,
+        );
         break;
 
       default:
         message =
-            e.message ??
-                'Something went wrong';
+            AppStrings.error(
+          context,
+        );
     }
 
-    _showMessage(
-      message,
-    );
+    _showMessage(message);
   }
 
-  // ============================================================
+  // =============================================================
   // MESSAGE
-  // ============================================================
+  // =============================================================
 
   void _showMessage(
     String message,
   ) {
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context)
+    ScaffoldMessenger
+        .of(context)
         .hideCurrentSnackBar();
 
-    ScaffoldMessenger.of(context)
+    ScaffoldMessenger
+        .of(context)
         .showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-        ),
+        content:
+            Text(message),
 
         backgroundColor:
-            const Color(
-          0xFF1A1A1A,
-        ),
+            Theme.of(context)
+                .cardColor,
       ),
     );
   }

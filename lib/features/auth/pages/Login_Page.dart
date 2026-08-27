@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:tech_store/core/constsnts/AppStrings.dart';
 import 'package:tech_store/core/constsnts/DeviceService.dart';
 import 'package:tech_store/core/routes/approuter.dart';
 import 'package:tech_store/core/service/auth_service.dart';
@@ -14,6 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const Color primaryBlue = Color(0xFF4C5DFF);
+
   final GlobalKey<FormState> formKey =
       GlobalKey<FormState>();
 
@@ -27,30 +30,41 @@ class _LoginPageState extends State<LoginPage> {
 
   bool obscurePassword = true;
 
-  // =========================================================
-  // BUILD
-  // =========================================================
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final textColor =
+        theme.textTheme.bodyLarge?.color ??
+            Colors.white;
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
+            Colors.grey;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor:
+          theme.scaffoldBackgroundColor,
 
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor:
+            theme.scaffoldBackgroundColor,
         elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+        iconTheme: IconThemeData(
+          color: textColor,
         ),
       ),
 
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
+          padding:
+              const EdgeInsets.symmetric(
             horizontal: 24,
           ),
+
           child: Form(
             key: formKey,
+
             child: Column(
               children: [
                 const SizedBox(height: 10),
@@ -59,12 +73,17 @@ class _LoginPageState extends State<LoginPage> {
                 // TITLE
                 // =================================================
 
-                const Text(
-                  'Welcome Back ',
+                Text(
+                  AppStrings.get(
+                    context,
+                    en: 'Welcome Back',
+                    ar: 'مرحباً بعودتك',
+                  ),
                   style: TextStyle(
                     fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    fontWeight:
+                        FontWeight.bold,
+                    color: textColor,
                   ),
                 ),
 
@@ -74,20 +93,25 @@ class _LoginPageState extends State<LoginPage> {
                 // ACCOUNT ICON
                 // =================================================
 
-                const Icon(
+                Icon(
                   Icons.account_circle,
                   size: 100,
-                  color: Colors.white,
+                  color: textColor,
                 ),
 
                 const SizedBox(height: 10),
 
-                const Text(
-                  'Login Account with',
+                Text(
+                  AppStrings.get(
+                    context,
+                    en: 'Login Account with',
+                    ar: 'تسجيل الدخول باستخدام',
+                  ),
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    fontWeight:
+                        FontWeight.w500,
+                    color: textColor,
                   ),
                 ),
 
@@ -103,26 +127,28 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.facebook,
                         size: 40,
-                        color: Colors.white,
+                        color: textColor,
                       ),
                     ),
+
                     IconButton(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.email,
                         size: 40,
-                        color: Colors.white,
+                        color: textColor,
                       ),
                     ),
+
                     IconButton(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.g_mobiledata,
                         size: 55,
-                        color: Colors.white,
+                        color: textColor,
                       ),
                     ),
                   ],
@@ -134,14 +160,18 @@ class _LoginPageState extends State<LoginPage> {
                 // EMAIL LABEL
                 // =================================================
 
-                const Align(
-                  alignment: Alignment.centerLeft,
+                Align(
+                  alignment:
+                      AlignmentDirectional
+                          .centerStart,
+
                   child: Text(
-                    'Email',
+                    AppStrings.email(context),
                     style: TextStyle(
-                      color: Colors.white,
+                      color: textColor,
                       fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          FontWeight.w500,
                     ),
                   ),
                 ),
@@ -153,77 +183,52 @@ class _LoginPageState extends State<LoginPage> {
                 // =================================================
 
                 TextFormField(
-                  controller: emailController,
+                  controller:
+                      emailController,
+
                   keyboardType:
                       TextInputType.emailAddress,
-                  style: const TextStyle(
-                    color: Colors.white,
+
+                  style: TextStyle(
+                    color: textColor,
                   ),
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email',
-                    hintStyle: const TextStyle(
-                      color: Colors.grey,
+
+                  decoration:
+                      _inputDecoration(
+                    context,
+                    hint: AppStrings.get(
+                      context,
+                      en: 'Enter your email',
+                      ar: 'أدخل بريدك الإلكتروني',
                     ),
-                    prefixIcon: const Icon(
-                      Icons.email_outlined,
-                      color: Colors.grey,
-                    ),
-                    filled: true,
-                    fillColor:
-                        const Color(0xFF1A1A1A),
-                    enabledBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Color(0xFF333333),
-                      ),
-                    ),
-                    focusedBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Color(0xFF4C5DFF),
-                        width: 2,
-                      ),
-                    ),
-                    errorBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Colors.red,
-                      ),
-                    ),
-                    focusedErrorBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Colors.red,
-                        width: 2,
-                      ),
-                    ),
+                    icon:
+                        Icons.email_outlined,
                   ),
+
                   validator: (value) {
                     if (value == null ||
                         value.trim().isEmpty) {
-                      return 'Please enter your email';
+                      return AppStrings.get(
+                        context,
+                        en: 'Please enter your email',
+                        ar: 'من فضلك أدخل بريدك الإلكتروني',
+                      );
                     }
 
-                    final emailRegex = RegExp(
+                    final emailRegex =
+                        RegExp(
                       r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                     );
 
-                    if (!emailRegex.hasMatch(
+                    if (!emailRegex
+                        .hasMatch(
                       value.trim(),
                     )) {
-                      return 'Please enter a valid email';
+                      return AppStrings.get(
+                        context,
+                        en: 'Please enter a valid email',
+                        ar: 'من فضلك أدخل بريد إلكتروني صحيح',
+                      );
                     }
 
                     return null;
@@ -236,14 +241,18 @@ class _LoginPageState extends State<LoginPage> {
                 // PASSWORD LABEL
                 // =================================================
 
-                const Align(
-                  alignment: Alignment.centerLeft,
+                Align(
+                  alignment:
+                      AlignmentDirectional
+                          .centerStart,
+
                   child: Text(
-                    'Password',
+                    AppStrings.password(context),
                     style: TextStyle(
-                      color: Colors.white,
+                      color: textColor,
                       fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          FontWeight.w500,
                     ),
                   ),
                 ),
@@ -255,100 +264,93 @@ class _LoginPageState extends State<LoginPage> {
                 // =================================================
 
                 TextFormField(
-                  controller: passwordController,
-                  obscureText: obscurePassword,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  controller:
+                      passwordController,
+
+                  obscureText:
+                      obscurePassword,
+
+                  style: TextStyle(
+                    color: textColor,
                   ),
-                  decoration: InputDecoration(
-                    hintText: 'Enter your password',
-                    hintStyle: const TextStyle(
-                      color: Colors.grey,
+
+                  decoration:
+                      _inputDecoration(
+                    context,
+                    hint: AppStrings.get(
+                      context,
+                      en: 'Enter your password',
+                      ar: 'أدخل كلمة المرور',
                     ),
-                    prefixIcon: const Icon(
-                      Icons.lock_outline,
-                      color: Colors.grey,
-                    ),
-                    suffixIcon: IconButton(
+                    icon:
+                        Icons.lock_outline,
+                    suffixIcon:
+                        IconButton(
                       onPressed: () {
                         setState(() {
                           obscurePassword =
                               !obscurePassword;
                         });
                       },
+
                       icon: Icon(
                         obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor:
-                        const Color(0xFF1A1A1A),
-                    enabledBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Color(0xFF333333),
-                      ),
-                    ),
-                    focusedBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Color(0xFF4C5DFF),
-                        width: 2,
-                      ),
-                    ),
-                    errorBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Colors.red,
-                      ),
-                    ),
-                    focusedErrorBorder:
-                        OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(
-                        color: Colors.red,
-                        width: 2,
+                            ? Icons
+                                .visibility_off
+                            : Icons
+                                .visibility,
+                        color:
+                            secondaryColor,
                       ),
                     ),
                   ),
+
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty) {
-                      return 'Please enter your password';
+                      return AppStrings.get(
+                        context,
+                        en: 'Please enter your password',
+                        ar: 'من فضلك أدخل كلمة المرور',
+                      );
                     }
 
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return AppStrings.get(
+                        context,
+                        en: 'Password must be at least 6 characters',
+                        ar: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+                      );
                     }
 
-                    if (!RegExp(r'[A-Za-z]')
-                        .hasMatch(value)) {
-                      return 'Password must contain a letter';
+                    if (!RegExp(
+                      r'[A-Za-z]',
+                    ).hasMatch(value)) {
+                      return AppStrings.get(
+                        context,
+                        en: 'Password must contain a letter',
+                        ar: 'كلمة المرور يجب أن تحتوي على حرف',
+                      );
                     }
 
-                    if (!RegExp(r'[0-9]')
-                        .hasMatch(value)) {
-                      return 'Password must contain a number';
+                    if (!RegExp(
+                      r'[0-9]',
+                    ).hasMatch(value)) {
+                      return AppStrings.get(
+                        context,
+                        en: 'Password must contain a number',
+                        ar: 'كلمة المرور يجب أن تحتوي على رقم',
+                      );
                     }
 
                     if (!RegExp(
                       r'[!@#$%^&*(),.?":{}|<>_\-]',
                     ).hasMatch(value)) {
-                      return 'Password must contain a special character';
+                      return AppStrings.get(
+                        context,
+                        en: 'Password must contain a special character',
+                        ar: 'كلمة المرور يجب أن تحتوي على رمز خاص',
+                      );
                     }
 
                     return null;
@@ -364,24 +366,31 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: double.infinity,
                   height: 55,
+
                   child: ElevatedButton(
                     onPressed: _login,
+
                     style:
                         ElevatedButton.styleFrom(
                       backgroundColor:
-                          const Color(0xFF4C5DFF),
+                          primaryBlue,
                       foregroundColor:
                           Colors.white,
                       elevation: 0,
+
                       shape:
                           RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.circular(14),
+                            BorderRadius.circular(
+                          14,
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
+
+                    child: Text(
+                      AppStrings.login(context),
+                      style:
+                          const TextStyle(
                         fontSize: 17,
                         fontWeight:
                             FontWeight.bold,
@@ -399,25 +408,40 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment:
                       MainAxisAlignment.center,
+
                   children: [
-                    const Text(
-                      'Want to create an account? ',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
+                    Flexible(
+                      child: Text(
+                        AppStrings.get(
+                          context,
+                          en: 'Want to create an account? ',
+                          ar: 'هل تريد إنشاء حساب؟ ',
+                        ),
+                        style: TextStyle(
+                          color:
+                              secondaryColor,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
+
                     GestureDetector(
                       onTap: () {
                         context.go(
                           AppRouter.register,
                         );
                       },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
+
+                      child: Text(
+                        AppStrings.get(
+                          context,
+                          en: 'Sign Up',
+                          ar: 'إنشاء حساب',
+                        ),
+                        style:
+                            const TextStyle(
                           color:
-                              Color(0xFF4C5DFF),
+                              primaryBlue,
                           fontSize: 14,
                           fontWeight:
                               FontWeight.bold,
@@ -436,9 +460,95 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // =========================================================
+  // =============================================================
+  // INPUT DECORATION
+  // =============================================================
+
+  InputDecoration _inputDecoration(
+    BuildContext context, {
+    required String hint,
+    required IconData icon,
+    Widget? suffixIcon,
+  }) {
+    final theme =
+        Theme.of(context);
+
+    final secondaryColor =
+        theme.textTheme.bodyMedium?.color
+                ?.withOpacity(0.65) ??
+            Colors.grey;
+
+    return InputDecoration(
+      hintText: hint,
+
+      hintStyle: TextStyle(
+        color: secondaryColor,
+      ),
+
+      prefixIcon: Icon(
+        icon,
+        color: secondaryColor,
+      ),
+
+      suffixIcon: suffixIcon,
+
+      filled: true,
+
+      fillColor:
+          theme.cardColor,
+
+      enabledBorder:
+          OutlineInputBorder(
+        borderRadius:
+            BorderRadius.circular(14),
+
+        borderSide:
+            BorderSide(
+          color:
+              theme.dividerColor,
+        ),
+      ),
+
+      focusedBorder:
+          OutlineInputBorder(
+        borderRadius:
+            BorderRadius.circular(14),
+
+        borderSide:
+            const BorderSide(
+          color: primaryBlue,
+          width: 2,
+        ),
+      ),
+
+      errorBorder:
+          OutlineInputBorder(
+        borderRadius:
+            BorderRadius.circular(14),
+
+        borderSide:
+            const BorderSide(
+          color: Colors.red,
+        ),
+      ),
+
+      focusedErrorBorder:
+          OutlineInputBorder(
+        borderRadius:
+            BorderRadius.circular(14),
+
+        borderSide:
+            const BorderSide(
+          color: Colors.red,
+          width: 2,
+        ),
+      ),
+    );
+  }
+
+  // =============================================================
   // LOGIN
-  // =========================================================
+  // =============================================================
 
   Future<void> _login() async {
     if (!formKey.currentState!.validate()) {
@@ -446,76 +556,92 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     try {
-      // =======================================================
+      // =========================================================
       // LOADING
-      // =======================================================
+      // =========================================================
 
       showDialog(
         context: context,
         barrierDismissible: false,
+
         builder: (_) {
           return const Center(
-            child: CircularProgressIndicator(
-              color: Color(0xFF4C5DFF),
+            child:
+                CircularProgressIndicator(
+              color: primaryBlue,
             ),
           );
         },
       );
 
-      // =======================================================
-      // FIREBASE LOGIN THROUGH AUTH SERVICE
-      // =======================================================
+      // =========================================================
+      // FIREBASE LOGIN
+      // =========================================================
 
-      final credential = await _authService.login(
-        email: emailController.text.trim(),
-        password: passwordController.text,
+      final credential =
+          await _authService.login(
+        email:
+            emailController.text.trim(),
+        password:
+            passwordController.text,
       );
 
-      final user = credential.user;
+      final user =
+          credential.user;
 
-      // =======================================================
+      // =========================================================
       // REGISTER DEVICE
-      // =======================================================
+      // =========================================================
 
       if (user != null) {
-        await DeviceService.registerDevice();
+        await DeviceService
+            .registerDevice();
       }
 
       if (!mounted) return;
 
-      // =======================================================
+      // =========================================================
       // CLOSE LOADING
-      // =======================================================
+      // =========================================================
 
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
       }
 
-      // =======================================================
-      // CHECK USER
-      // =======================================================
+      // =========================================================
+      // USER CHECK
+      // =========================================================
 
       if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login failed.'),
-            backgroundColor: Colors.red,
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppStrings.get(
+                context,
+                en: 'Login failed.',
+                ar: 'فشل تسجيل الدخول.',
+              ),
+            ),
+            backgroundColor:
+                Colors.red,
           ),
         );
 
         return;
       }
 
-      // =======================================================
+      // =========================================================
       // USER NAME
-      // =======================================================
+      // =========================================================
 
       final userName =
           user.displayName ?? 'User';
 
-      // =======================================================
+      // =========================================================
       // GO HOME
-      // =======================================================
+      // =========================================================
 
       context.go(
         AppRouter.home,
@@ -534,14 +660,20 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pop(context);
       }
 
-      final message = _getLoginErrorMessage(
+      final message =
+          _getLoginErrorMessage(
+        context,
         e.code,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(
         SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red,
+          content:
+              Text(message),
+          backgroundColor:
+              Colors.red,
         ),
       );
     }
@@ -557,48 +689,82 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pop(context);
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(
+        SnackBar(
           content: Text(
-            'Something went wrong.',
+            AppStrings.get(
+              context,
+              en: 'Something went wrong.',
+              ar: 'حدث خطأ ما.',
+            ),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor:
+              Colors.red,
         ),
       );
     }
   }
 
-  // =========================================================
+  // =============================================================
   // LOGIN ERROR MESSAGE
-  // =========================================================
+  // =============================================================
 
-  String _getLoginErrorMessage(String code) {
+  String _getLoginErrorMessage(
+    BuildContext context,
+    String code,
+  ) {
     switch (code) {
       case 'invalid-credential':
       case 'wrong-password':
       case 'user-not-found':
-        return 'Email or password is incorrect.';
+        return AppStrings.get(
+          context,
+          en: 'Email or password is incorrect.',
+          ar: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+        );
 
       case 'invalid-email':
-        return 'Please enter a valid email.';
+        return AppStrings.get(
+          context,
+          en: 'Please enter a valid email.',
+          ar: 'من فضلك أدخل بريد إلكتروني صحيح.',
+        );
 
       case 'user-disabled':
-        return 'This account has been disabled.';
+        return AppStrings.get(
+          context,
+          en: 'This account has been disabled.',
+          ar: 'هذا الحساب تم تعطيله.',
+        );
 
       case 'network-request-failed':
-        return 'Please check your internet connection.';
+        return AppStrings.get(
+          context,
+          en: 'Please check your internet connection.',
+          ar: 'من فضلك تحقق من اتصال الإنترنت.',
+        );
 
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later.';
+        return AppStrings.get(
+          context,
+          en: 'Too many attempts. Please try again later.',
+          ar: 'محاولات كثيرة جداً. حاول مرة أخرى لاحقاً.',
+        );
 
       default:
-        return 'Login failed. Please try again.';
+        return AppStrings.get(
+          context,
+          en: 'Login failed. Please try again.',
+          ar: 'فشل تسجيل الدخول. حاول مرة أخرى.',
+        );
     }
   }
 
-  // =========================================================
+  // =============================================================
   // DISPOSE
-  // =========================================================
+  // =============================================================
 
   @override
   void dispose() {
