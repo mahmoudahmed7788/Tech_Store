@@ -39,6 +39,9 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SafeArea(
         child: BlocListener<RegisterCubit, RegisterState>(
           listener: (context, state) {
+            // ==============================
+            // LOADING
+            // ==============================
             if (state is RegisterLoading) {
               showDialog(
                 context: context,
@@ -51,6 +54,9 @@ class _RegisterPageState extends State<RegisterPage> {
               );
             }
 
+            // ==============================
+            // SUCCESS
+            // ==============================
             if (state is RegisterSuccess) {
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
@@ -78,6 +84,9 @@ class _RegisterPageState extends State<RegisterPage> {
               );
             }
 
+            // ==============================
+            // FAILURE
+            // ==============================
             if (state is RegisterFailure) {
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
@@ -85,6 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               final message = state.message.toLowerCase();
 
+              // Email already exists
               if (message.contains('already') ||
                   message.contains('in use') ||
                   message.contains('email-already-in-use')) {
@@ -110,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 return;
               }
 
+              // Other errors
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
@@ -127,9 +138,9 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 35),
 
-                // =================================================
+                // ==============================
                 // TITLE
-                // =================================================
+                // ==============================
                 Center(
                   child: Text(
                     AppStrings.get(
@@ -147,9 +158,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 10),
 
-                // =================================================
+                // ==============================
                 // SUBTITLE
-                // =================================================
+                // ==============================
                 Center(
                   child: Text(
                     AppStrings.get(
@@ -163,9 +174,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 35),
 
-                // =================================================
+                // ==============================
                 // FIRST NAME + LAST NAME
-                // =================================================
+                // ==============================
                 Row(
                   children: [
                     Expanded(
@@ -173,6 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: firstNameController,
                         hint: AppStrings.firstName(context),
                         icon: Icons.person_outline,
+                        obscureText: false,
                       ),
                     ),
 
@@ -183,6 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: lastNameController,
                         hint: AppStrings.lastName(context),
                         icon: Icons.person_outline,
+                        obscureText: false,
                       ),
                     ),
                   ],
@@ -190,36 +203,43 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 16),
 
-                // =================================================
+                // ==============================
                 // EMAIL
-                // =================================================
+                // ==============================
                 RegisterTextField(
                   controller: emailController,
                   hint: AppStrings.email(context),
                   icon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
+                  obscureText: false,
                 ),
 
                 const SizedBox(height: 16),
 
-                // =================================================
+                // ==============================
                 // PASSWORD
-                // =================================================
+                // ==============================
                 TextField(
                   controller: passwordController,
                   obscureText: obscurePassword,
                   keyboardType: TextInputType.visiblePassword,
+
                   style: TextStyle(color: textColor),
+
                   decoration: InputDecoration(
                     hintText: AppStrings.password(context),
+
                     hintStyle: TextStyle(color: secondaryColor),
+
                     prefixIcon: Icon(Icons.lock_outline, color: secondaryColor),
+
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
                           obscurePassword = !obscurePassword;
                         });
                       },
+
                       icon: Icon(
                         obscurePassword
                             ? Icons.visibility_outlined
@@ -227,20 +247,25 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: secondaryColor,
                       ),
                     ),
+
                     filled: true,
                     fillColor: theme.cardColor,
+
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide(color: theme.dividerColor),
                     ),
+
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide(color: theme.dividerColor),
                     ),
+
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(color: primaryBlue),
+                      borderSide: const BorderSide(color: primaryBlue),
                     ),
+
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 16,
@@ -250,9 +275,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 25),
 
-                // =================================================
+                // ==============================
                 // REGISTER BUTTON
-                // =================================================
+                // ==============================
                 SizedBox(
                   width: double.infinity,
                   height: 55,
@@ -276,6 +301,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         en: 'Create Account',
                         ar: 'إنشاء حساب',
                       ),
+
                       style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -286,9 +312,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 25),
 
-                // =================================================
+                // ==============================
                 // OR
-                // =================================================
+                // ==============================
                 Row(
                   children: [
                     Expanded(child: Divider(color: theme.dividerColor)),
@@ -308,12 +334,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 22),
 
-                // =================================================
+                // ==============================
                 // SOCIAL BUTTONS
-                // =================================================
+                // ==============================
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-
                   children: [
                     _socialButton(context, Icons.g_mobiledata),
 
@@ -329,9 +354,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 28),
 
-                // =================================================
+                // ==============================
                 // LOGIN
-                // =================================================
+                // ==============================
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
 
@@ -352,6 +377,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       child: Text(
                         AppStrings.login(context),
+
                         style: const TextStyle(
                           color: primaryBlue,
                           fontWeight: FontWeight.bold,
@@ -416,7 +442,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
       decoration: BoxDecoration(
         color: theme.cardColor,
+
         borderRadius: BorderRadius.circular(14),
+
         border: Border.all(color: theme.dividerColor),
       ),
 

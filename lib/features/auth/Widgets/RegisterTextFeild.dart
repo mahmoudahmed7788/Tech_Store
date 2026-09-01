@@ -5,13 +5,17 @@ class RegisterTextField extends StatelessWidget {
   final String hint;
   final IconData icon;
   final TextInputType keyboardType;
+  final Widget? suffixIcon;
+  final bool obscureText;
 
   const RegisterTextField({
     super.key,
     required this.controller,
     required this.hint,
     required this.icon,
-    this.keyboardType = TextInputType.text, required IconButton suffixIcon, required bool obscureText,
+    this.keyboardType = TextInputType.text,
+    this.suffixIcon,
+    this.obscureText = false,
   });
 
   @override
@@ -21,6 +25,7 @@ class RegisterTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
+      obscureText: obscureText,
 
       style: TextStyle(
         color: theme.textTheme.bodyLarge?.color,
@@ -30,14 +35,15 @@ class RegisterTextField extends StatelessWidget {
         hintText: hint,
 
         hintStyle: TextStyle(
-          color: theme.textTheme.bodyMedium?.color
-              ?.withOpacity(.65),
+          color: theme.textTheme.bodyMedium?.color?.withOpacity(.65),
         ),
 
         prefixIcon: Icon(
           icon,
           color: theme.iconTheme.color,
         ),
+
+        suffixIcon: suffixIcon,
 
         filled: true,
         fillColor: theme.cardColor,
