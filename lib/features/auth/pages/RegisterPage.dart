@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tech_store/core/constsnts/AppStrings.dart';
 import 'package:tech_store/core/routes/approuter.dart';
 import 'package:tech_store/features/auth/cubits/RegisterCubit.dart';
+import 'package:tech_store/features/auth/widgets/RegisterTextFeild.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -27,15 +28,14 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final textColor =
-        theme.textTheme.bodyLarge?.color ?? Colors.white;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
 
     final secondaryColor =
-        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
-            Colors.grey;
+        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ?? Colors.grey;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
+
       body: SafeArea(
         child: BlocListener<RegisterCubit, RegisterState>(
           listener: (context, state) {
@@ -45,9 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 barrierDismissible: false,
                 builder: (_) {
                   return const Center(
-                    child: CircularProgressIndicator(
-                      color: primaryBlue,
-                    ),
+                    child: CircularProgressIndicator(color: primaryBlue),
                   );
                 },
               );
@@ -103,14 +101,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 );
 
-                Future.delayed(
-                  const Duration(milliseconds: 500),
-                  () {
-                    if (mounted) {
-                      context.go(AppRouter.login);
-                    }
-                  },
-                );
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  if (mounted) {
+                    context.go(AppRouter.login);
+                  }
+                });
 
                 return;
               }
@@ -123,13 +118,18 @@ class _RegisterPageState extends State<RegisterPage> {
               );
             }
           },
+
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24),
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 35),
 
+                // =================================================
+                // TITLE
+                // =================================================
                 Center(
                   child: Text(
                     AppStrings.get(
@@ -147,6 +147,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 10),
 
+                // =================================================
+                // SUBTITLE
+                // =================================================
                 Center(
                   child: Text(
                     AppStrings.get(
@@ -154,20 +157,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       en: 'Sign up to continue',
                       ar: 'أنشئ حسابك للمتابعة',
                     ),
-                    style: TextStyle(
-                      color: secondaryColor,
-                      fontSize: 15,
-                    ),
+                    style: TextStyle(color: secondaryColor, fontSize: 15),
                   ),
                 ),
 
                 const SizedBox(height: 35),
 
+                // =================================================
+                // FIRST NAME + LAST NAME
+                // =================================================
                 Row(
                   children: [
                     Expanded(
-                      child: _buildTextField(
-                        context: context,
+                      child: RegisterTextField(
                         controller: firstNameController,
                         hint: AppStrings.firstName(context),
                         icon: Icons.person_outline,
@@ -177,8 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(width: 12),
 
                     Expanded(
-                      child: _buildTextField(
-                        context: context,
+                      child: RegisterTextField(
                         controller: lastNameController,
                         hint: AppStrings.lastName(context),
                         icon: Icons.person_outline,
@@ -189,8 +190,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 16),
 
-                _buildTextField(
-                  context: context,
+                // =================================================
+                // EMAIL
+                // =================================================
+                RegisterTextField(
                   controller: emailController,
                   hint: AppStrings.email(context),
                   icon: Icons.email_outlined,
@@ -199,21 +202,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 16),
 
-                TextFormField(
+                // =================================================
+                // PASSWORD
+                // =================================================
+                TextField(
                   controller: passwordController,
                   obscureText: obscurePassword,
-                  style: TextStyle(
-                    color: textColor,
-                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     hintText: AppStrings.password(context),
-                    hintStyle: TextStyle(
-                      color: secondaryColor,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.lock_outline,
-                      color: secondaryColor,
-                    ),
+                    hintStyle: TextStyle(color: secondaryColor),
+                    prefixIcon: Icon(Icons.lock_outline, color: secondaryColor),
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -231,39 +231,45 @@ class _RegisterPageState extends State<RegisterPage> {
                     fillColor: theme.cardColor,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none,
+                      borderSide: BorderSide(color: theme.dividerColor),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(
-                        color: theme.dividerColor,
-                      ),
+                      borderSide: BorderSide(color: theme.dividerColor),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(
-                        color: primaryBlue,
-                        width: 1.5,
-                      ),
+                      borderSide: BorderSide(color: primaryBlue),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 25),
 
+                // =================================================
+                // REGISTER BUTTON
+                // =================================================
                 SizedBox(
                   width: double.infinity,
                   height: 55,
+
                   child: ElevatedButton(
                     onPressed: _register,
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryBlue,
                       foregroundColor: Colors.white,
                       elevation: 0,
+
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
+
                     child: Text(
                       AppStrings.get(
                         context,
@@ -280,61 +286,55 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 25),
 
+                // =================================================
+                // OR
+                // =================================================
                 Row(
                   children: [
-                    Expanded(
-                      child: Divider(
-                        color: theme.dividerColor,
-                      ),
-                    ),
+                    Expanded(child: Divider(color: theme.dividerColor)),
+
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+
                       child: Text(
-                        AppStrings.get(
-                          context,
-                          en: 'OR',
-                          ar: 'أو',
-                        ),
-                        style: TextStyle(
-                          color: secondaryColor,
-                        ),
+                        AppStrings.get(context, en: 'OR', ar: 'أو'),
+                        style: TextStyle(color: secondaryColor),
                       ),
                     ),
-                    Expanded(
-                      child: Divider(
-                        color: theme.dividerColor,
-                      ),
-                    ),
+
+                    Expanded(child: Divider(color: theme.dividerColor)),
                   ],
                 ),
 
                 const SizedBox(height: 22),
 
+                // =================================================
+                // SOCIAL BUTTONS
+                // =================================================
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
-                    _socialButton(
-                      context,
-                      Icons.g_mobiledata,
-                    ),
+                    _socialButton(context, Icons.g_mobiledata),
+
                     const SizedBox(width: 15),
-                    _socialButton(
-                      context,
-                      Icons.facebook,
-                    ),
+
+                    _socialButton(context, Icons.facebook),
+
                     const SizedBox(width: 15),
-                    _socialButton(
-                      context,
-                      Icons.apple,
-                    ),
+
+                    _socialButton(context, Icons.apple),
                   ],
                 ),
 
                 const SizedBox(height: 28),
 
+                // =================================================
+                // LOGIN
+                // =================================================
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
                     Text(
                       AppStrings.get(
@@ -342,14 +342,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         en: 'Already have an account?',
                         ar: 'لديك حساب بالفعل؟',
                       ),
-                      style: TextStyle(
-                        color: secondaryColor,
-                      ),
+                      style: TextStyle(color: secondaryColor),
                     ),
+
                     TextButton(
                       onPressed: () {
                         context.go(AppRouter.login);
                       },
+
                       child: Text(
                         AppStrings.login(context),
                         style: const TextStyle(
@@ -369,6 +369,10 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
+  // =============================================================
+  // REGISTER
+  // =============================================================
 
   void _register() {
     if (firstNameController.text.trim().isEmpty ||
@@ -392,94 +396,41 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     context.read<RegisterCubit>().register(
-          email: emailController.text.trim(),
-          password: passwordController.text,
-          firstName: firstNameController.text.trim(),
-          lastName: lastNameController.text.trim(),
-        );
-  }
-
-  Widget _buildTextField({
-    required BuildContext context,
-    required TextEditingController controller,
-    required String hint,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    final theme = Theme.of(context);
-
-    final textColor =
-        theme.textTheme.bodyLarge?.color ?? Colors.white;
-
-    final secondaryColor =
-        theme.textTheme.bodyMedium?.color?.withOpacity(0.65) ??
-            Colors.grey;
-
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      style: TextStyle(
-        color: textColor,
-      ),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: secondaryColor,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: secondaryColor,
-        ),
-        filled: true,
-        fillColor: theme.cardColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: theme.dividerColor,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(
-            color: primaryBlue,
-            width: 1.5,
-          ),
-        ),
-      ),
+      email: emailController.text.trim(),
+      password: passwordController.text,
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
     );
   }
 
-  Widget _socialButton(
-    BuildContext context,
-    IconData icon,
-  ) {
+  // =============================================================
+  // SOCIAL BUTTON
+  // =============================================================
+
+  Widget _socialButton(BuildContext context, IconData icon) {
     final theme = Theme.of(context);
 
     return Container(
       width: 55,
       height: 55,
+
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: theme.dividerColor,
-        ),
+        border: Border.all(color: theme.dividerColor),
       ),
+
       child: IconButton(
         onPressed: () {},
-        icon: Icon(
-          icon,
-          color:
-              theme.iconTheme.color,
-          size: 27,
-        ),
+
+        icon: Icon(icon, color: theme.iconTheme.color, size: 27),
       ),
     );
   }
+
+  // =============================================================
+  // DISPOSE
+  // =============================================================
 
   @override
   void dispose() {

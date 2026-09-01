@@ -2,6 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:tech_store/core/constsnts/AppStrings.dart';
+import 'package:tech_store/features/settings/Widgets/Profile/ProfileTitle.dart';
+
+import 'package:tech_store/features/settings/widgets/profile/ProfileHeader.dart';
+import 'package:tech_store/features/settings/widgets/profile/ProfilePasswordField.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userName;
@@ -12,26 +16,37 @@ class ProfilePage extends StatefulWidget {
   });
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() =>
+      _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  static const Color primaryBlue = Color(0xFF4C5DFF);
+class _ProfilePageState
+    extends State<ProfilePage> {
+  static const Color primaryBlue =
+      Color(0xFF4C5DFF);
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth =
+      FirebaseAuth.instance;
 
-  final TextEditingController nameController =
+  final TextEditingController
+      nameController =
       TextEditingController();
 
-  final TextEditingController emailController =
+  final TextEditingController
+      emailController =
       TextEditingController();
 
-  final TextEditingController phoneController =
+  final TextEditingController
+      phoneController =
       TextEditingController();
 
   String? newPassword;
 
   bool isSaving = false;
+
+  // =========================================================
+  // INIT
+  // =========================================================
 
   @override
   void initState() {
@@ -44,18 +59,29 @@ class _ProfilePageState extends State<ProfilePage> {
             ? user!.displayName!
             : widget.userName;
 
-    emailController.text = user?.email ?? '';
+    emailController.text =
+        user?.email ?? '';
 
-    phoneController.text = user?.phoneNumber ?? '';
+    phoneController.text =
+        user?.phoneNumber ?? '';
   }
+
+  // =========================================================
+  // DISPOSE
+  // =========================================================
 
   @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();
     phoneController.dispose();
+
     super.dispose();
   }
+
+  // =========================================================
+  // BUILD
+  // =========================================================
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +91,6 @@ class _ProfilePageState extends State<ProfilePage> {
         theme.textTheme.bodyLarge?.color ??
             Colors.white;
 
-    final secondaryColor =
-        theme.textTheme.bodyMedium?.color
-                ?.withOpacity(0.65) ??
-            Colors.grey;
-
     return Scaffold(
       backgroundColor:
           theme.scaffoldBackgroundColor,
@@ -77,123 +98,147 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor:
             theme.scaffoldBackgroundColor,
-        foregroundColor: textColor,
+
+        foregroundColor:
+            textColor,
+
         elevation: 0,
 
         title: Text(
           AppStrings.profile(context),
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight:
+                FontWeight.bold,
           ),
         ),
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding:
+            const EdgeInsets.all(20),
 
         child: Column(
           children: [
-            const SizedBox(height: 20),
-
             // =================================================
-            // AVATAR
+            // HEADER
             // =================================================
 
-            const CircleAvatar(
-              radius: 55,
-              backgroundColor: primaryBlue,
-
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 60,
-              ),
+            ProfileHeader(
+              userName:
+                  nameController.text,
             ),
-
-            const SizedBox(height: 20),
-
-            // =================================================
-            // USER NAME
-            // =================================================
-
-            Text(
-              nameController.text.isEmpty
-                  ? AppStrings.user(context)
-                  : nameController.text,
-
-              style: TextStyle(
-                color: textColor,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 35),
 
             // =================================================
             // NAME
             // =================================================
 
-            _profileTile(
-              icon: Icons.person_outline,
-              title: AppStrings.firstName(context),
+            ProfileTile(
+              icon:
+                  Icons.person_outline,
+
+              title:
+                  AppStrings.firstName(
+                context,
+              ),
+
               value:
                   nameController.text.isEmpty
-                      ? AppStrings.addYourName(context)
+                      ? AppStrings
+                          .addYourName(
+                          context,
+                        )
                       : nameController.text,
-              onTap: _changeName,
+
+              onTap:
+                  _changeName,
             ),
 
             // =================================================
             // EMAIL
             // =================================================
 
-            _profileTile(
-              icon: Icons.email_outlined,
-              title: AppStrings.email(context),
+            ProfileTile(
+              icon:
+                  Icons.email_outlined,
+
+              title:
+                  AppStrings.email(
+                context,
+              ),
+
               value:
                   emailController.text.isEmpty
-                      ? AppStrings.addYourEmail(context)
+                      ? AppStrings
+                          .addYourEmail(
+                          context,
+                        )
                       : emailController.text,
-              onTap: _changeEmail,
+
+              onTap:
+                  _changeEmail,
             ),
 
             // =================================================
             // PHONE
             // =================================================
 
-            _profileTile(
-              icon: Icons.phone_outlined,
-              title: AppStrings.phone(context),
+            ProfileTile(
+              icon:
+                  Icons.phone_outlined,
+
+              title:
+                  AppStrings.phone(
+                context,
+              ),
+
               value:
                   phoneController.text.isEmpty
-                      ? AppStrings.addYourPhone(context)
+                      ? AppStrings
+                          .addYourPhone(
+                          context,
+                        )
                       : phoneController.text,
-              onTap: _changePhone,
+
+              onTap:
+                  _changePhone,
             ),
 
             // =================================================
             // PASSWORD
             // =================================================
 
-            _profileTile(
-              icon: Icons.lock_outline,
-              title: AppStrings.password(context),
-              value: '••••••••',
-              onTap: _changePassword,
+            ProfileTile(
+              icon:
+                  Icons.lock_outline,
+
+              title:
+                  AppStrings.password(
+                context,
+              ),
+
+              value:
+                  '••••••••',
+
+              onTap:
+                  _changePassword,
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(
+              height: 30,
+            ),
 
             // =================================================
             // SAVE
             // =================================================
 
             SizedBox(
-              width: double.infinity,
+              width:
+                  double.infinity,
+
               height: 55,
 
-              child: ElevatedButton(
+              child:
+                  ElevatedButton(
                 onPressed:
                     isSaving
                         ? null
@@ -212,7 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   shape:
                       RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(14),
+                        BorderRadius.circular(
+                      14,
+                    ),
                   ),
                 ),
 
@@ -221,11 +268,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         ? const SizedBox(
                             width: 23,
                             height: 23,
-
                             child:
                                 CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              color: Colors.white,
+                              strokeWidth:
+                                  2.5,
+                              color:
+                                  Colors.white,
                             ),
                           )
                         : Text(
@@ -233,7 +281,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 .saveChanges(
                               context,
                             ),
-
                             style:
                                 const TextStyle(
                               fontSize: 17,
@@ -244,89 +291,18 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
     );
   }
 
-  // =============================================================
-  // PROFILE TILE
-  // =============================================================
-
-  Widget _profileTile({
-    required IconData icon,
-    required String title,
-    required String value,
-    required VoidCallback onTap,
-  }) {
-    final theme = Theme.of(context);
-
-    return Container(
-      margin:
-          const EdgeInsets.only(
-        bottom: 12,
-      ),
-
-      decoration:
-          BoxDecoration(
-        color:
-            theme.cardColor,
-
-        borderRadius:
-            BorderRadius.circular(14),
-      ),
-
-      child: ListTile(
-        onTap: onTap,
-
-        leading:
-            Icon(
-          icon,
-          color:
-              theme.iconTheme.color,
-        ),
-
-        title:
-            Text(
-          title,
-
-          style:
-              TextStyle(
-            color:
-                theme.textTheme.bodySmall?.color,
-            fontSize: 12,
-          ),
-        ),
-
-        subtitle:
-            Text(
-          value,
-
-          style:
-              TextStyle(
-            color:
-                theme.textTheme.bodyLarge?.color,
-            fontSize: 15,
-          ),
-        ),
-
-        trailing:
-            Icon(
-          Icons.arrow_forward_ios,
-          color:
-              theme.iconTheme.color
-                  ?.withOpacity(0.5),
-          size: 17,
-        ),
-      ),
-    );
-  }
-
-  // =============================================================
+  // =========================================================
   // CHANGE NAME
-  // =============================================================
+  // =========================================================
 
   void _changeName() {
     final controller =
@@ -337,10 +313,10 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
 
-      builder: (dialogContext) {
+      builder:
+          (dialogContext) {
         return AlertDialog(
-          title:
-              Text(
+          title: Text(
             AppStrings.changeName(
               context,
             ),
@@ -375,8 +351,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
 
-              child:
-                  Text(
+              child: Text(
                 AppStrings.cancel(
                   context,
                 ),
@@ -390,7 +365,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 if (name.isEmpty) {
                   _showMessage(
-                    AppStrings.nameCannotBeEmpty(
+                    AppStrings
+                        .nameCannotBeEmpty(
                       context,
                     ),
                   );
@@ -415,8 +391,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Colors.white,
               ),
 
-              child:
-                  Text(
+              child: Text(
                 AppStrings.done(
                   context,
                 ),
@@ -428,9 +403,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // =============================================================
+  // =========================================================
   // CHANGE EMAIL
-  // =============================================================
+  // =========================================================
 
   void _changeEmail() {
     final controller =
@@ -441,10 +416,10 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
 
-      builder: (dialogContext) {
+      builder:
+          (dialogContext) {
         return AlertDialog(
-          title:
-              Text(
+          title: Text(
             AppStrings.changeEmail(
               context,
             ),
@@ -458,7 +433,8 @@ class _ProfilePageState extends State<ProfilePage> {
             autofocus: true,
 
             keyboardType:
-                TextInputType.emailAddress,
+                TextInputType
+                    .emailAddress,
 
             decoration:
                 InputDecoration(
@@ -482,8 +458,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
 
-              child:
-                  Text(
+              child: Text(
                 AppStrings.cancel(
                   context,
                 ),
@@ -498,7 +473,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (email.isEmpty ||
                     !email.contains('@')) {
                   _showMessage(
-                    AppStrings.enterValidEmail(
+                    AppStrings
+                        .enterValidEmail(
                       context,
                     ),
                   );
@@ -523,8 +499,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Colors.white,
               ),
 
-              child:
-                  Text(
+              child: Text(
                 AppStrings.done(
                   context,
                 ),
@@ -536,9 +511,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // =============================================================
+  // =========================================================
   // CHANGE PHONE
-  // =============================================================
+  // =========================================================
 
   void _changePhone() {
     final controller =
@@ -549,10 +524,10 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
 
-      builder: (dialogContext) {
+      builder:
+          (dialogContext) {
         return AlertDialog(
-          title:
-              Text(
+          title: Text(
             AppStrings.changePhone(
               context,
             ),
@@ -595,8 +570,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
 
-              child:
-                  Text(
+              child: Text(
                 AppStrings.cancel(
                   context,
                 ),
@@ -610,7 +584,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 if (phone.isEmpty) {
                   _showMessage(
-                    AppStrings.phoneCannotBeEmpty(
+                    AppStrings
+                        .phoneCannotBeEmpty(
                       context,
                     ),
                   );
@@ -635,8 +610,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Colors.white,
               ),
 
-              child:
-                  Text(
+              child: Text(
                 AppStrings.done(
                   context,
                 ),
@@ -648,9 +622,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // =============================================================
+  // =========================================================
   // CHANGE PASSWORD
-  // =============================================================
+  // =========================================================
 
   void _changePassword() {
     final currentController =
@@ -670,7 +644,8 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       barrierDismissible: false,
 
-      builder: (dialogContext) {
+      builder:
+          (dialogContext) {
         return StatefulBuilder(
           builder:
               (
@@ -678,9 +653,9 @@ class _ProfilePageState extends State<ProfilePage> {
             setDialogState,
           ) {
             return AlertDialog(
-              title:
-                  Text(
-                AppStrings.changePasswordTitle(
+              title: Text(
+                AppStrings
+                    .changePasswordTitle(
                   context,
                 ),
               ),
@@ -692,12 +667,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       MainAxisSize.min,
 
                   children: [
-                    _passwordField(
+                    ProfilePasswordField(
                       controller:
                           currentController,
 
                       label:
-                          AppStrings.currentPassword(
+                          AppStrings
+                              .currentPassword(
                         context,
                       ),
 
@@ -716,12 +692,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 15,
                     ),
 
-                    _passwordField(
+                    ProfilePasswordField(
                       controller:
                           newController,
 
                       label:
-                          AppStrings.newPassword(
+                          AppStrings
+                              .newPassword(
                         context,
                       ),
 
@@ -740,12 +717,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 15,
                     ),
 
-                    _passwordField(
+                    ProfilePasswordField(
                       controller:
                           confirmController,
 
                       label:
-                          AppStrings.confirmPassword(
+                          AppStrings
+                              .confirmPassword(
                         context,
                       ),
 
@@ -771,8 +749,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
                   },
 
-                  child:
-                      Text(
+                  child: Text(
                     AppStrings.cancel(
                       context,
                     ),
@@ -808,7 +785,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       return;
                     }
 
-                    if (password.length < 6) {
+                    if (password.length <
+                        6) {
                       _showMessage(
                         AppStrings
                             .passwordMinLength(
@@ -818,7 +796,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       return;
                     }
 
-                    if (password != confirm) {
+                    if (password !=
+                        confirm) {
                       _showMessage(
                         AppStrings
                             .passwordsDoNotMatch(
@@ -828,7 +807,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       return;
                     }
 
-                    if (password == current) {
+                    if (password ==
+                        current) {
                       _showMessage(
                         AppStrings
                             .newPasswordDifferent(
@@ -843,7 +823,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           _auth.currentUser;
 
                       if (user == null ||
-                          user.email == null) {
+                          user.email ==
+                              null) {
                         _showMessage(
                           AppStrings
                               .noLoggedUser(
@@ -882,8 +863,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           context,
                         ),
                       );
-                    } on FirebaseAuthException catch (e) {
-                      _showFirebaseError(e);
+                    } on FirebaseAuthException catch (
+                        e) {
+                      _showFirebaseError(
+                        e,
+                      );
                     }
                   },
 
@@ -895,8 +879,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Colors.white,
                   ),
 
-                  child:
-                      Text(
+                  child: Text(
                     AppStrings.done(
                       context,
                     ),
@@ -910,49 +893,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // =============================================================
-  // PASSWORD FIELD
-  // =============================================================
-
-  Widget _passwordField({
-    required TextEditingController controller,
-    required String label,
-    required bool obscure,
-    required VoidCallback onEyePressed,
-  }) {
-    return TextField(
-      controller: controller,
-
-      obscureText: obscure,
-
-      decoration:
-          InputDecoration(
-        labelText: label,
-
-        prefixIcon:
-            const Icon(
-          Icons.lock_outline,
-        ),
-
-        suffixIcon:
-            IconButton(
-          onPressed:
-              onEyePressed,
-
-          icon:
-              Icon(
-            obscure
-                ? Icons.visibility
-                : Icons.visibility_off,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // =============================================================
-  // SAVE
-  // =============================================================
+  // =========================================================
+  // SAVE CHANGES
+  // =========================================================
 
   Future<void> _saveChanges() async {
     final user =
@@ -977,7 +920,8 @@ class _ProfilePageState extends State<ProfilePage> {
           nameController.text.trim();
 
       if (newName.isNotEmpty &&
-          newName != user.displayName) {
+          newName !=
+              user.displayName) {
         await user.updateDisplayName(
           newName,
         );
@@ -997,7 +941,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
       if (newEmail.isNotEmpty &&
           newEmail != user.email) {
-        await user.verifyBeforeUpdateEmail(
+        await user
+            .verifyBeforeUpdateEmail(
           newEmail,
         );
       }
@@ -1017,7 +962,8 @@ class _ProfilePageState extends State<ProfilePage> {
           context,
         ),
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (
+        e) {
       if (!mounted) return;
 
       setState(() {
@@ -1040,9 +986,9 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // =============================================================
+  // =========================================================
   // FIREBASE ERROR
-  // =============================================================
+  // =========================================================
 
   void _showFirebaseError(
     FirebaseAuthException e,
@@ -1089,7 +1035,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
       case 'network-request-failed':
         message =
-            AppStrings.checkInternetConnection(
+            AppStrings
+                .checkInternetConnection(
           context,
         );
         break;
@@ -1104,9 +1051,9 @@ class _ProfilePageState extends State<ProfilePage> {
     _showMessage(message);
   }
 
-  // =============================================================
+  // =========================================================
   // MESSAGE
-  // =============================================================
+  // =========================================================
 
   void _showMessage(
     String message,

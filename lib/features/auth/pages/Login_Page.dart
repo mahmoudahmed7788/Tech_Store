@@ -6,6 +6,7 @@ import 'package:tech_store/core/constsnts/AppStrings.dart';
 import 'package:tech_store/core/constsnts/DeviceService.dart';
 import 'package:tech_store/core/routes/approuter.dart';
 import 'package:tech_store/core/service/auth_service.dart';
+import 'package:tech_store/features/auth/widgets/LoginTextFeild.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -182,28 +183,21 @@ class _LoginPageState extends State<LoginPage> {
                 // EMAIL
                 // =================================================
 
-                TextFormField(
+                LoginTextField(
                   controller:
                       emailController,
 
                   keyboardType:
                       TextInputType.emailAddress,
 
-                  style: TextStyle(
-                    color: textColor,
+                  hint: AppStrings.get(
+                    context,
+                    en: 'Enter your email',
+                    ar: 'أدخل بريدك الإلكتروني',
                   ),
 
-                  decoration:
-                      _inputDecoration(
-                    context,
-                    hint: AppStrings.get(
-                      context,
-                      en: 'Enter your email',
-                      ar: 'أدخل بريدك الإلكتروني',
-                    ),
-                    icon:
-                        Icons.email_outlined,
-                  ),
+                  icon:
+                      Icons.email_outlined,
 
                   validator: (value) {
                     if (value == null ||
@@ -263,45 +257,37 @@ class _LoginPageState extends State<LoginPage> {
                 // PASSWORD
                 // =================================================
 
-                TextFormField(
+                LoginTextField(
                   controller:
                       passwordController,
 
                   obscureText:
                       obscurePassword,
 
-                  style: TextStyle(
-                    color: textColor,
+                  hint: AppStrings.get(
+                    context,
+                    en: 'Enter your password',
+                    ar: 'أدخل كلمة المرور',
                   ),
 
-                  decoration:
-                      _inputDecoration(
-                    context,
-                    hint: AppStrings.get(
-                      context,
-                      en: 'Enter your password',
-                      ar: 'أدخل كلمة المرور',
-                    ),
-                    icon:
-                        Icons.lock_outline,
-                    suffixIcon:
-                        IconButton(
-                      onPressed: () {
-                        setState(() {
-                          obscurePassword =
-                              !obscurePassword;
-                        });
-                      },
+                  icon:
+                      Icons.lock_outline,
 
-                      icon: Icon(
-                        obscurePassword
-                            ? Icons
-                                .visibility_off
-                            : Icons
-                                .visibility,
-                        color:
-                            secondaryColor,
-                      ),
+                  suffixIcon:
+                      IconButton(
+                    onPressed: () {
+                      setState(() {
+                        obscurePassword =
+                            !obscurePassword;
+                      });
+                    },
+
+                    icon: Icon(
+                      obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color:
+                          secondaryColor,
                     ),
                   ),
 
@@ -455,92 +441,6 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  // =============================================================
-  // INPUT DECORATION
-  // =============================================================
-
-  InputDecoration _inputDecoration(
-    BuildContext context, {
-    required String hint,
-    required IconData icon,
-    Widget? suffixIcon,
-  }) {
-    final theme =
-        Theme.of(context);
-
-    final secondaryColor =
-        theme.textTheme.bodyMedium?.color
-                ?.withOpacity(0.65) ??
-            Colors.grey;
-
-    return InputDecoration(
-      hintText: hint,
-
-      hintStyle: TextStyle(
-        color: secondaryColor,
-      ),
-
-      prefixIcon: Icon(
-        icon,
-        color: secondaryColor,
-      ),
-
-      suffixIcon: suffixIcon,
-
-      filled: true,
-
-      fillColor:
-          theme.cardColor,
-
-      enabledBorder:
-          OutlineInputBorder(
-        borderRadius:
-            BorderRadius.circular(14),
-
-        borderSide:
-            BorderSide(
-          color:
-              theme.dividerColor,
-        ),
-      ),
-
-      focusedBorder:
-          OutlineInputBorder(
-        borderRadius:
-            BorderRadius.circular(14),
-
-        borderSide:
-            const BorderSide(
-          color: primaryBlue,
-          width: 2,
-        ),
-      ),
-
-      errorBorder:
-          OutlineInputBorder(
-        borderRadius:
-            BorderRadius.circular(14),
-
-        borderSide:
-            const BorderSide(
-          color: Colors.red,
-        ),
-      ),
-
-      focusedErrorBorder:
-          OutlineInputBorder(
-        borderRadius:
-            BorderRadius.circular(14),
-
-        borderSide:
-            const BorderSide(
-          color: Colors.red,
-          width: 2,
         ),
       ),
     );

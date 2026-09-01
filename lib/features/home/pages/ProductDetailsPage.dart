@@ -8,10 +8,7 @@ import 'package:tech_store/features/favorites/cubits/FavouriteCubit.dart';
 class ProductDetailsPage extends StatelessWidget {
   final ProductModel product;
 
-  const ProductDetailsPage({
-    super.key,
-    required this.product,
-  });
+  const ProductDetailsPage({super.key, required this.product});
 
   static const Color primaryBlue = Color(0xFF4C5DFF);
 
@@ -28,18 +25,12 @@ class ProductDetailsPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
 
         title: const Text(
           'Product Details',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
 
         centerTitle: true,
@@ -47,23 +38,17 @@ class ProductDetailsPage extends StatelessWidget {
         actions: [
           BlocBuilder<FavoritesCubit, List<ProductModel>>(
             builder: (context, favorites) {
-              final isFavorite = context
-                  .read<FavoritesCubit>()
-                  .isFavorite(product);
+              final isFavorite = context.read<FavoritesCubit>().isFavorite(
+                product,
+              );
 
               return IconButton(
                 onPressed: () {
-                  context
-                      .read<FavoritesCubit>()
-                      .toggleFavorite(product);
+                  context.read<FavoritesCubit>().toggleFavorite(product);
                 },
                 icon: Icon(
-                  isFavorite
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-                  color: isFavorite
-                      ? Colors.red
-                      : Colors.white,
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : Colors.white,
                 ),
               );
             },
@@ -73,16 +58,13 @@ class ProductDetailsPage extends StatelessWidget {
 
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            bottom: 30,
-          ),
+          padding: const EdgeInsets.only(bottom: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // =====================================================
               // PRODUCT IMAGE
               // =====================================================
-
               Container(
                 margin: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -100,11 +82,7 @@ class ProductDetailsPage extends StatelessWidget {
                     product.thumbnail,
                     fit: BoxFit.contain,
                     cacheWidth: 700,
-                    errorBuilder: (
-                      context,
-                      error,
-                      stackTrace,
-                    ) {
+                    errorBuilder: (context, error, stackTrace) {
                       return const Center(
                         child: Icon(
                           Icons.image_not_supported,
@@ -113,19 +91,13 @@ class ProductDetailsPage extends StatelessWidget {
                         ),
                       );
                     },
-                    loadingBuilder: (
-                      context,
-                      child,
-                      loadingProgress,
-                    ) {
+                    loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {
                         return child;
                       }
 
                       return const Center(
-                        child: CircularProgressIndicator(
-                          color: primaryBlue,
-                        ),
+                        child: CircularProgressIndicator(color: primaryBlue),
                       );
                     },
                   ),
@@ -137,14 +109,10 @@ class ProductDetailsPage extends StatelessWidget {
               // =====================================================
               // PRODUCT INFORMATION
               // =====================================================
-
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       product.title,
@@ -160,11 +128,7 @@ class ProductDetailsPage extends StatelessWidget {
                     // Rating
                     Row(
                       children: [
-                        const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 21,
-                        ),
+                        const Icon(Icons.star, color: Colors.amber, size: 21),
 
                         const SizedBox(width: 6),
 
@@ -181,10 +145,7 @@ class ProductDetailsPage extends StatelessWidget {
 
                         const Text(
                           'Rating',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -206,7 +167,6 @@ class ProductDetailsPage extends StatelessWidget {
                     // =================================================
                     // DESCRIPTION
                     // =================================================
-
                     const Text(
                       'Description',
                       style: TextStyle(
@@ -232,7 +192,6 @@ class ProductDetailsPage extends StatelessWidget {
                     // =================================================
                     // BRAND / CATEGORY
                     // =================================================
-
                     Row(
                       children: [
                         Expanded(
@@ -260,23 +219,17 @@ class ProductDetailsPage extends StatelessWidget {
                     // =================================================
                     // FAVORITE BUTTON
                     // =================================================
-
                     SizedBox(
                       width: double.infinity,
                       height: 55,
                       child: OutlinedButton.icon(
                         onPressed: () {
-                          context
-                              .read<FavoritesCubit>()
-                              .toggleFavorite(product);
+                          context.read<FavoritesCubit>().toggleFavorite(
+                            product,
+                          );
                         },
-                        icon: BlocBuilder<
-                            FavoritesCubit,
-                            List<ProductModel>>(
-                          builder: (
-                            context,
-                            favorites,
-                          ) {
+                        icon: BlocBuilder<FavoritesCubit, List<ProductModel>>(
+                          builder: (context, favorites) {
                             final isFavorite = context
                                 .read<FavoritesCubit>()
                                 .isFavorite(product);
@@ -285,19 +238,12 @@ class ProductDetailsPage extends StatelessWidget {
                               isFavorite
                                   ? Icons.favorite
                                   : Icons.favorite_border,
-                              color: isFavorite
-                                  ? Colors.red
-                                  : Colors.white,
+                              color: isFavorite ? Colors.red : Colors.white,
                             );
                           },
                         ),
-                        label: BlocBuilder<
-                            FavoritesCubit,
-                            List<ProductModel>>(
-                          builder: (
-                            context,
-                            favorites,
-                          ) {
+                        label: BlocBuilder<FavoritesCubit, List<ProductModel>>(
+                          builder: (context, favorites) {
                             final isFavorite = context
                                 .read<FavoritesCubit>()
                                 .isFavorite(product);
@@ -314,12 +260,9 @@ class ProductDetailsPage extends StatelessWidget {
                           },
                         ),
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Color(0xFF444444),
-                          ),
+                          side: const BorderSide(color: Color(0xFF444444)),
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                       ),
@@ -330,12 +273,11 @@ class ProductDetailsPage extends StatelessWidget {
                     // =================================================
                     // ADD TO CART
                     // =================================================
-
                     BlocBuilder<CartCubit, List<ProductModel>>(
                       builder: (context, cart) {
-                        final isInCart = context
-                            .read<CartCubit>()
-                            .isInCart(product);
+                        final isInCart = context.read<CartCubit>().isInCart(
+                          product,
+                        );
 
                         return SizedBox(
                           width: double.infinity,
@@ -343,21 +285,16 @@ class ProductDetailsPage extends StatelessWidget {
                           child: ElevatedButton.icon(
                             onPressed: () {
                               if (!isInCart) {
-                                context
-                                    .read<CartCubit>()
-                                    .addToCart(product);
+                                context.read<CartCubit>().addToCart(product);
 
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).hideCurrentSnackBar();
 
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text(
-                                      'Product added to cart',
-                                    ),
-                                    duration:
-                                        Duration(seconds: 2),
+                                    content: Text('Product added to cart'),
+                                    duration: Duration(seconds: 2),
                                   ),
                                 );
                               }
@@ -365,14 +302,11 @@ class ProductDetailsPage extends StatelessWidget {
                             icon: Icon(
                               isInCart
                                   ? Icons.check
-                                  : Icons
-                                      .shopping_cart_outlined,
+                                  : Icons.shopping_cart_outlined,
                               size: 22,
                             ),
                             label: Text(
-                              isInCart
-                                  ? 'Added to Cart'
-                                  : 'Add to Cart',
+                              isInCart ? 'Added to Cart' : 'Add to Cart',
                               style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
@@ -383,8 +317,7 @@ class ProductDetailsPage extends StatelessWidget {
                               foregroundColor: Colors.white,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(14),
                               ),
                             ),
                           ),
@@ -418,25 +351,17 @@ class ProductDetailsPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: primaryBlue,
-            size: 24,
-          ),
+          Icon(icon, color: primaryBlue, size: 24),
 
           const SizedBox(width: 10),
 
           Expanded(
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
 
                 const SizedBox(height: 4),
