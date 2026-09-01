@@ -1,17 +1,77 @@
-# tech_store
+# 🛒 Tech Store
 
-A new Flutter project.
+A modern e-commerce mobile application built with Flutter.
 
-## Getting Started
+Tech Store provides users with a simple and smooth shopping experience, including browsing products, searching, managing favorites, adding products to the cart, and managing their account.
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- 🔐 User Authentication
+- 🏠 Modern Home Page
+- 🛍️ Browse Products
+- 🔎 Product Search
+- ❤️ Favorites
+- 🛒 Shopping Cart
+- 💳 Checkout Flow
+- 👤 User Profile
+- ⚙️ Settings
+- 🔔 Notifications Settings
+- 🌙 Dark & Light Mode
+- 🌍 Language Settings
+- 🔒 Privacy & Security
+- 📱 Responsive Flutter UI
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 🛠️ Technologies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Dart
+- Firebase Authentication
+- Firebase
+- BLoC / Cubit
+- Dio
+- REST APIs
+- GoRouter
+
+## 📦 Packages
+
+Some of the main packages used in this project:
+
+- flutter_bloc
+- firebase_core
+- firebase_auth
+- dio
+- go_router
+- flutter_native_splash
+
+## 📸 Screenshots
+
+### Splash Screen
+_Add screenshot here_
+
+### Home Screen
+_Add screenshot here_
+
+### Products
+_Add screenshot here_
+
+### Product Details
+_Add screenshot here_
+
+### Cart
+_Add screenshot here_
+
+### Settings
+_Add screenshot here_
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have Flutter installed on your machine.
+
+### Installation
+
+Clone the repository:
+
+```bash
+git https://github.com/mahmoudahmed7788/Tech_Store
